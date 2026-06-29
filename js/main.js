@@ -743,46 +743,62 @@
           var isValid = true;
           var missingMessage = 'Faltan elementos requeridos en tu código.';
 
+          // Funciones de ayuda
+          var count = function(str) {
+            var matches = codeLower.match(new RegExp(str, 'g'));
+            return matches ? matches.length : 0;
+          };
+
           switch (lessonId) {
             case 1:
-              isValid = codeLower.includes('<title>') && codeLower.includes('<h1>') && codeLower.includes('<p>');
-              missingMessage = 'Asegúrate de incluir las etiquetas <title>, <h1> y <p>.';
+              // Deben cambiar el texto original
+              isValid = !codeLower.includes('mi primera página') && 
+                        !codeLower.includes('¡hola mundo!') && 
+                        !codeLower.includes('esta es mi primera página web');
+              missingMessage = 'Debes cambiar el texto original del título, el h1 y el párrafo con tus propios datos.';
               break;
             case 2:
-              isValid = codeLower.includes('<h1>') && codeLower.includes('<h2>') && codeLower.includes('<strong>') && codeLower.includes('<em>') && codeLower.includes('<a ') && codeLower.includes('<hr>');
-              missingMessage = 'Faltan etiquetas. Asegúrate de usar <h1>, <h2>, <strong>, <em>, <a> y <hr>.';
+              isValid = codeLower.includes('<hr>') && 
+                        codeLower.includes('target="_blank"') && 
+                        codeLower.includes('href="#') && 
+                        count('<h2') >= 2;
+              missingMessage = 'Asegúrate de incluir una línea <hr>, un enlace con target="_blank", un enlace interno (href="#..."), y al menos dos subtítulos <h2>.';
               break;
             case 3:
-              isValid = codeLower.includes('<header>') && codeLower.includes('<nav>') && codeLower.includes('<main>') && codeLower.includes('<section>') && codeLower.includes('<footer>') && codeLower.includes('<img ') && codeLower.includes('alt=') && codeLower.includes('<ul>') && codeLower.includes('<ol>');
-              missingMessage = 'Usa las etiquetas semánticas (header, nav, main, section, footer), además de <img>, <ul> y <ol>.';
+              isValid = codeLower.includes('<header>') && codeLower.includes('<nav>') && 
+                        codeLower.includes('<main>') && codeLower.includes('<section>') && 
+                        codeLower.includes('<footer>') && codeLower.includes('<ol>');
+              missingMessage = 'Faltan etiquetas semánticas (header, nav, main, section, footer) o la lista ordenada (<ol>).';
               break;
             case 4:
-              isValid = codeLower.includes('<form') && codeLower.includes('type="email"') && codeLower.includes('type="password"') && codeLower.includes('<select') && codeLower.includes('type="radio"') && codeLower.includes('type="checkbox"');
-              missingMessage = 'Asegúrate de incluir los inputs requeridos: email, password, select, radio y checkbox.';
+              isValid = codeLower.includes('type="password"') && codeLower.includes('type="radio"') && 
+                        codeLower.includes('type="checkbox"') && codeLower.includes('<select');
+              missingMessage = 'Tu formulario debe incluir un campo password, botones radio, un checkbox y un select (desplegable).';
               break;
             case 5:
-              isValid = codeLower.includes('<table') && codeLower.includes('<thead') && codeLower.includes('<tbody') && codeLower.includes('colspan') && codeLower.includes('rowspan') && (codeLower.includes('<video') || codeLower.includes('<audio'));
-              missingMessage = 'Tu tabla necesita thead, tbody, colspan, rowspan y una etiqueta multimedia (video o audio).';
+              isValid = codeLower.includes('colspan') && codeLower.includes('rowspan') && 
+                        (codeLower.includes('<video') || codeLower.includes('<audio'));
+              missingMessage = 'La tabla necesita los atributos colspan y rowspan. También debes añadir un <video> o <audio>.';
               break;
             case 6:
-              isValid = codeLower.includes('<style>') && codeLower.includes('background-color') && codeLower.includes('color') && codeLower.includes('font-family');
-              missingMessage = 'Usa CSS interno (<style>) y cambia propiedades como background-color, color y font-family.';
+              isValid = codeLower.includes('rgb') && codeLower.includes('text-decoration: underline');
+              missingMessage = 'Asegúrate de usar un color rgb() y aplicar text-decoration: underline a un texto.';
               break;
             case 7:
-              isValid = codeLower.includes('class=') && codeLower.includes('id=') && (codeLower.includes('<div') || codeLower.includes('<span'));
-              missingMessage = 'Asegúrate de usar atributos class y id, y etiquetas <div> o <span>.';
+              isValid = codeLower.includes(':hover') && codeLower.includes(':nth-child');
+              missingMessage = 'Debes usar las pseudo-clases :hover y :nth-child en tu CSS.';
               break;
             case 8:
-              isValid = codeLower.includes('margin') && codeLower.includes('padding') && codeLower.includes('border') && codeLower.includes('box-sizing');
-              missingMessage = 'Modifica los valores de margin, padding, border y asegúrate de usar box-sizing.';
+              isValid = count('border-radius') >= 1 && codeLower.includes('box-sizing: border-box');
+              missingMessage = 'Asegúrate de aplicar border-radius y usar box-sizing: border-box.';
               break;
             case 9:
-              isValid = codeLower.includes('display: flex') && codeLower.includes('justify-content') && codeLower.includes('align-items');
-              missingMessage = 'Usa Flexbox con display: flex, justify-content y align-items.';
+              isValid = codeLower.includes('justify-content: space-between') && codeLower.includes('flex-wrap: wrap') && codeLower.includes('gap');
+              missingMessage = 'Falta aplicar Flexbox correctamente: asegúrate de usar justify-content: space-between, flex-wrap: wrap y gap.';
               break;
             case 10:
-              isValid = codeLower.includes('@media') && (codeLower.includes('max-width') || codeLower.includes('min-width'));
-              missingMessage = 'Asegúrate de usar la regla @media y definir un ancho (max-width o min-width).';
+              isValid = codeLower.includes('@media') && codeLower.includes('grid-column: span 2');
+              missingMessage = 'Debes incluir una regla @media para móviles y usar grid-column: span 2 en uno de los elementos.';
               break;
           }
 
