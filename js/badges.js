@@ -278,6 +278,14 @@
     return unlockedIds.indexOf(badgeId) !== -1;
   };
 
+  /**
+   * Reinicia todas las insignias al estado bloqueado
+   */
+  WebCraftBadges.reset = function () {
+    unlockedIds = [];
+    saveUnlocked();
+  };
+
   // --- Exponer globalmente ---
   window.WebCraftBadges = WebCraftBadges;
 

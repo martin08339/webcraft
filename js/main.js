@@ -1002,6 +1002,9 @@
       resetBtn.addEventListener('click', function () {
         if (confirm('¿Estás seguro de que quieres reiniciar todo tu progreso? Perderás todas tus lecciones completadas, insignias, XP y rachas. Esta acción no se puede deshacer.')) {
           window.WebCraftProgress.reset();
+          if (window.WebCraftBadges && typeof window.WebCraftBadges.reset === 'function') {
+            window.WebCraftBadges.reset();
+          }
           if (window.showToast) {
             window.showToast('Progreso reiniciado correctamente', 'success');
           }
