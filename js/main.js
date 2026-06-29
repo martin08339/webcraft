@@ -738,67 +738,116 @@
             return;
           }
 
-          // Validación específica por lección para asegurar que cumplieron el reto
-          var codeLower = currentCode.toLowerCase();
+          // Validación específica usando DOMParser para evitar trampas
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(currentCode, 'text/html');
+          
           var isValid = true;
           var missingMessage = 'Faltan elementos requeridos en tu código.';
 
-          // Funciones de ayuda
-          var count = function(str) {
-            var matches = codeLower.match(new RegExp(str, 'g'));
-            return matches ? matches.length : 0;
-          };
-
           switch (lessonId) {
             case 1:
-              // Deben cambiar el texto original
-              isValid = !codeLower.includes('mi primera página') && 
-                        !codeLower.includes('¡hola mundo!') && 
-                        !codeLower.includes('esta es mi primera página web');
-              missingMessage = 'Debes cambiar el texto original del título, el h1 y el párrafo con tus propios datos.';
+              var titleEl = doc.querySelector('title');
+              var h1El = doc.querySelector('h1');
+              var pEl = doc.querySelector('p');
+              
+              if (!titleEl || !h1El || !pEl) {
+                isValid = false;
+                missingMessage = 'Tu código debe incluir al menos un <title>, un <h1> y un <p>.';
+              } else {
+                var tText = titleEl.textContent.toLowerCase();
+                var hText = h1El.textContent.toLowerCase();
+                var pText = pEl.textContent.toLowerCase();
+                
+                if (tText.includes('primera') || hText.includes('mundo') || pText.includes('página')) {
+                  isValid = false;
+                  missingMessage = '¡Borra las frases originales y escribe tu propio título, nombre y ciudad!';
+                } else if (tText.length < 3 || hText.length < 3 || pText.length < 3) {
+                  isValid = false;
+                  missingMessage = 'El texto que escribiste es muy corto. Intenta ser más descriptivo.';
+                }
+              }
               break;
+
             case 2:
-              isValid = codeLower.includes('<hr>') && 
-                        codeLower.includes('target="_blank"') && 
-                        codeLower.includes('href="#') && 
-                        count('<h2') >= 2;
-              missingMessage = 'Asegúrate de incluir una línea <hr>, un enlace con target="_blank", un enlace interno (href="#..."), y al menos dos subtítulos <h2>.';
+              if (!doc.querySelector('h1')) { isValid = false; missingMessage = 'Falta el <h1>.'; break; }
+              if (doc.querySelectorAll('h2').length < 2) { isValid = false; missingMessage = 'Necesitas al menos dos <h2>.'; break; }
+              if (doc.querySelectorAll('p').length < 3) { isValid = false; missingMessage = 'Necesitas al menos tres párrafos <p>.'; break; }
+              if (!doc.querySelector('strong')) { isValid = false; missingMessage = 'Usa la etiqueta <strong>.'; break; }
+              if (!doc.querySelector('em')) { isValid = false; missingMessage = 'Usa la etiqueta <em>.'; break; }
+              if (!doc.querySelector('a[target="_blank"]')) { isValid = false; missingMessage = 'Falta un enlace con target="_blank".'; break; }
+              if (!doc.querySelector('a[href^="#"]')) { isValid = false; missingMessage = 'Falta un enlace interno (href="#...").'; break; }
+              if (!doc.querySelector('hr')) { isValid = false; missingMessage = 'Falta la línea horizontal <hr>.'; break; }
               break;
+
             case 3:
-              isValid = codeLower.includes('<header>') && codeLower.includes('<nav>') && 
-                        codeLower.includes('<main>') && codeLower.includes('<section>') && 
-                        codeLower.includes('<footer>') && codeLower.includes('<ol>');
-              missingMessage = 'Faltan etiquetas semánticas (header, nav, main, section, footer) o la lista ordenada (<ol>).';
+              if (!doc.querySelector('header') || !doc.querySelector('nav') || !doc.querySelector('main') || !doc.querySelector('section') || !doc.querySelector('footer')) {
+                isValid = false; missingMessage = 'Usa TODAS las etiquetas semánticas: header, nav, main, section, footer.'; break;
+              }
+              if (!doc.querySelector('img[alt]')) { isValid = false; missingMessage = 'Falta una <img> con el atributo alt.'; break; }
+              if (doc.querySelectorAll('ul li').length < 4) { isValid = false; missingMessage = 'Tu lista desordenada <ul> necesita al menos 4 elementos <li>.'; break; }
+              if (doc.querySelectorAll('ol li').length < 3) { isValid = false; missingMessage = 'Tu lista ordenada <ol> necesita al menos 3 pasos <li>.'; break; }
+              if (doc.querySelectorAll('nav a').length < 3) { isValid = false; missingMessage = 'Tu menú <nav> necesita al menos 3 enlaces <a>.'; break; }
               break;
+
             case 4:
-              isValid = codeLower.includes('type="password"') && codeLower.includes('type="radio"') && 
-                        codeLower.includes('type="checkbox"') && codeLower.includes('<select');
-              missingMessage = 'Tu formulario debe incluir un campo password, botones radio, un checkbox y un select (desplegable).';
+              if (!doc.querySelector('form')) { isValid = false; missingMessage = 'Envuelve todo en una etiqueta <form>.'; break; }
+              if (!doc.querySelector('input[type="email"]')) { isValid = false; missingMessage = 'Falta un input de tipo email.'; break; }
+              if (!doc.querySelector('input[type="password"]')) { isValid = false; missingMessage = 'Falta un input de tipo password.'; break; }
+              if (!doc.querySelector('select')) { isValid = false; missingMessage = 'Falta un menú desplegable <select>.'; break; }
+              if (!doc.querySelector('input[type="radio"]')) { isValid = false; missingMessage = 'Falta al menos un botón de radio.'; break; }
+              if (!doc.querySelector('input[type="checkbox"]')) { isValid = false; missingMessage = 'Falta una casilla de verificación (checkbox).'; break; }
+              if (doc.querySelectorAll('label').length < 5) { isValid = false; missingMessage = 'Usa al menos 5 etiquetas <label> para tus campos.'; break; }
               break;
+
             case 5:
-              isValid = codeLower.includes('colspan') && codeLower.includes('rowspan') && 
-                        (codeLower.includes('<video') || codeLower.includes('<audio'));
-              missingMessage = 'La tabla necesita los atributos colspan y rowspan. También debes añadir un <video> o <audio>.';
+              if (!doc.querySelector('table')) { isValid = false; missingMessage = 'Falta la etiqueta <table>.'; break; }
+              if (!doc.querySelector('thead') || !doc.querySelector('tbody')) { isValid = false; missingMessage = 'La tabla debe tener <thead> y <tbody>.'; break; }
+              if (!doc.querySelector('th[colspan]') && !doc.querySelector('td[colspan]')) { isValid = false; missingMessage = 'Falta usar el atributo colspan.'; break; }
+              if (!doc.querySelector('th[rowspan]') && !doc.querySelector('td[rowspan]')) { isValid = false; missingMessage = 'Falta usar el atributo rowspan.'; break; }
+              if (!doc.querySelector('video[controls]') && !doc.querySelector('audio[controls]')) { isValid = false; missingMessage = 'Falta un <video> o <audio> con controles.'; break; }
               break;
+              
             case 6:
-              isValid = codeLower.includes('rgb') && codeLower.includes('text-decoration: underline');
-              missingMessage = 'Asegúrate de usar un color rgb() y aplicar text-decoration: underline a un texto.';
+              var style6 = doc.querySelector('style');
+              if (!style6) { isValid = false; missingMessage = 'Falta la etiqueta <style>.'; break; }
+              var cssText6 = style6.textContent.toLowerCase();
+              if (!cssText6.includes('background-color')) { isValid = false; missingMessage = 'Usa background-color en tu CSS.'; break; }
+              if (!cssText6.includes('rgb')) { isValid = false; missingMessage = 'Falta usar un color rgb().'; break; }
+              if (!cssText6.includes('text-decoration: underline')) { isValid = false; missingMessage = 'Falta usar text-decoration: underline.'; break; }
               break;
+              
             case 7:
-              isValid = codeLower.includes(':hover') && codeLower.includes(':nth-child');
-              missingMessage = 'Debes usar las pseudo-clases :hover y :nth-child en tu CSS.';
+              var style7 = doc.querySelector('style');
+              if (!style7) { isValid = false; missingMessage = 'Falta la etiqueta <style>.'; break; }
+              var cssText7 = style7.textContent.toLowerCase();
+              if (!cssText7.includes(':hover')) { isValid = false; missingMessage = 'Falta usar la pseudo-clase :hover.'; break; }
+              if (!cssText7.includes(':nth-child')) { isValid = false; missingMessage = 'Falta usar la pseudo-clase :nth-child.'; break; }
               break;
+              
             case 8:
-              isValid = count('border-radius') >= 1 && codeLower.includes('box-sizing: border-box');
-              missingMessage = 'Asegúrate de aplicar border-radius y usar box-sizing: border-box.';
+              var style8 = doc.querySelector('style');
+              if (!style8) { isValid = false; missingMessage = 'Falta la etiqueta <style>.'; break; }
+              var cssText8 = style8.textContent.toLowerCase();
+              if (!cssText8.includes('border-radius')) { isValid = false; missingMessage = 'Usa border-radius para redondear las esquinas.'; break; }
+              if (!cssText8.includes('box-sizing: border-box')) { isValid = false; missingMessage = 'Asegúrate de incluir box-sizing: border-box.'; break; }
               break;
+
             case 9:
-              isValid = codeLower.includes('justify-content: space-between') && codeLower.includes('flex-wrap: wrap') && codeLower.includes('gap');
-              missingMessage = 'Falta aplicar Flexbox correctamente: asegúrate de usar justify-content: space-between, flex-wrap: wrap y gap.';
+              var style9 = doc.querySelector('style');
+              if (!style9) { isValid = false; missingMessage = 'Falta la etiqueta <style>.'; break; }
+              var cssText9 = style9.textContent.toLowerCase();
+              if (!cssText9.includes('justify-content: space-between')) { isValid = false; missingMessage = 'Falta justify-content: space-between.'; break; }
+              if (!cssText9.includes('flex-wrap: wrap')) { isValid = false; missingMessage = 'Falta flex-wrap: wrap.'; break; }
+              if (!cssText9.includes('gap')) { isValid = false; missingMessage = 'Usa la propiedad gap.'; break; }
               break;
+
             case 10:
-              isValid = codeLower.includes('@media') && codeLower.includes('grid-column: span 2');
-              missingMessage = 'Debes incluir una regla @media para móviles y usar grid-column: span 2 en uno de los elementos.';
+              var style10 = doc.querySelector('style');
+              if (!style10) { isValid = false; missingMessage = 'Falta la etiqueta <style>.'; break; }
+              var cssText10 = style10.textContent.toLowerCase();
+              if (!cssText10.includes('@media')) { isValid = false; missingMessage = 'Falta la media query (@media).'; break; }
+              if (!cssText10.includes('grid-column: span 2')) { isValid = false; missingMessage = 'Haz que un elemento ocupe dos columnas con grid-column: span 2.'; break; }
               break;
           }
 
