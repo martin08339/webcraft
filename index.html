@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WebCraft - Aprende a crear páginas web desde cero. Lecciones interactivas de HTML, CSS y JavaScript. 100% gratis.">
+  <meta property="og:title" content="WebCraft - Aprende Desarrollo Web">
+  <meta property="og:description" content="Plataforma interactiva para aprender a crear páginas web desde cero.">
+  <meta property="og:type" content="website">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; frame-src 'self' blob:; img-src 'self' data:;">
+  <title>WebCraft — Aprende a Crear Páginas Web</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <header class="header" id="header">
+    <nav class="nav container">
+      <a href="index.html" class="nav-logo">Web<span>Craft</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active">Inicio</a></li>
+        <li><a href="lecciones.html">Lecciones</a></li>
+        <li><a href="about.html">Sobre el Proyecto</a></li>
+      </ul>
+      <a href="lecciones.html" class="btn btn-primary nav-cta">Comenzar</a>
+      <button class="hamburger" id="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="hero-content container">
+      <h1 class="animate-on-scroll">Aprende a Crear<br><span class="gradient-text">Páginas Web</span> Desde Cero</h1>
+      <p class="animate-on-scroll" data-delay="100">Lecciones interactivas, editor de código en vivo y un camino paso a paso para convertirte en desarrollador web. 100% gratis.</p>
+      <div class="hero-buttons animate-on-scroll" data-delay="200">
+        <a href="lecciones.html" class="btn btn-primary">Comenzar el Viaje →</a>
+        <a href="#features" class="btn btn-secondary">Conoce Más</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="stats">
+        <div class="stat-item animate-on-scroll">
+          <div class="stat-number" data-target="10">0</div>
+          <div class="stat-label">Lecciones</div>
+        </div>
+        <div class="stat-item animate-on-scroll" data-delay="100">
+          <div class="stat-number" data-target="5">0</div>
+          <div class="stat-label">Proyectos Prácticos</div>
+        </div>
+        <div class="stat-item animate-on-scroll" data-delay="200">
+          <div class="stat-number" data-target="8">0</div>
+          <div class="stat-label">Insignias</div>
+        </div>
+        <div class="stat-item animate-on-scroll" data-delay="300">
+          <div class="stat-number" data-target="100">0</div>
+          <div class="stat-label">% Gratis</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="container">
+      <h2 class="section-title animate-on-scroll">¿Qué Vas a <span class="gradient-text">Aprender</span>?</h2>
+      <p class="section-subtitle animate-on-scroll">Domina las 3 tecnologías fundamentales del desarrollo web</p>
+      <div class="features-grid">
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">📄</div>
+          <h3>HTML</h3>
+          <p>Aprende la estructura de toda página web. Desde etiquetas básicas hasta formularios y multimedia.</p>
+        </div>
+        <div class="feature-card animate-on-scroll" data-delay="100">
+          <div class="feature-icon">🎨</div>
+          <h3>CSS</h3>
+          <p>Dale vida y estilo a tus páginas. Colores, layouts modernos con Flexbox y Grid, diseño responsivo.</p>
+        </div>
+        <div class="feature-card animate-on-scroll" data-delay="200">
+          <div class="feature-icon">⚡</div>
+          <h3>JavaScript</h3>
+          <p>Agrega interactividad y lógica. Animaciones, manejo de eventos y mucho más. <em>(Próximamente)</em></p>
+        </div>
+        <div class="feature-card animate-on-scroll" data-delay="300">
+          <div class="feature-icon">🚀</div>
+          <h3>Proyectos Reales</h3>
+          <p>Practica con proyectos reales desde el primer día. Aprende haciendo, no solo leyendo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <h2 class="section-title animate-on-scroll">¿Cómo <span class="gradient-text">Funciona</span>?</h2>
+      <p class="section-subtitle animate-on-scroll">3 simples pasos para empezar a crear</p>
+      <div class="steps">
+        <div class="step animate-on-scroll">
+          <div class="step-number">1</div>
+          <h3>Elige una Lección</h3>
+          <p>Sigue el camino de aprendizaje diseñado para llevarte de cero a experto.</p>
+        </div>
+        <div class="step animate-on-scroll" data-delay="100">
+          <div class="step-number">2</div>
+          <h3>Practica con Código</h3>
+          <p>Usa nuestro editor interactivo para escribir y ver tu código en tiempo real.</p>
+        </div>
+        <div class="step animate-on-scroll" data-delay="200">
+          <div class="step-number">3</div>
+          <h3>Completa el Reto</h3>
+          <p>Gana XP e insignias al completar cada lección. ¡Desbloquea logros!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section donate-section" id="donate">
+    <div class="container">
+      <div class="donate-card animate-on-scroll">
+        <h2>☕ ¿Te Gusta Este Proyecto?</h2>
+        <p class="mt-2 mb-4" style="color: var(--text-secondary); line-height: 1.7;">WebCraft es y siempre será 100% gratis. Si este contenido te ha ayudado, puedes apoyar el proyecto para que siga creciendo.</p>
+        <a href="https://ko-fi.com/webcraft" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Apóyanos en Ko-fi ☕</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Web<span style="color: var(--accent-cyan)">Craft</span></h4>
+          <p style="color: var(--text-secondary); margin-top: 8px; line-height: 1.6;">Aprende desarrollo web desde cero con lecciones interactivas y proyectos reales.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navegación</h4>
+          <a href="index.html">Inicio</a>
+          <a href="lecciones.html">Lecciones</a>
+          <a href="about.html">Sobre el Proyecto</a>
+        </div>
+        <div class="footer-col">
+          <h4>Apóyanos</h4>
+          <a href="https://ko-fi.com/webcraft" target="_blank" rel="noopener noreferrer">Ko-fi ☕</a>
+          <a href="https://github.com/martin08339/webcraft" target="_blank" rel="noopener noreferrer">GitHub 💻</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 WebCraft — Hecho con 💙 en México</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/lessons.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/badges.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
