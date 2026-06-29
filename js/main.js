@@ -665,46 +665,58 @@
     }
 
     // --- Poblar la información de la lección ---
-    var titleEl = document.querySelector('.lesson-title');
+    var titleEl = document.querySelector('#lessonTitle') || document.querySelector('.lesson-title');
     if (titleEl) {
       titleEl.textContent = lesson.title || '';
     }
 
-    var contentEl = document.querySelector('.lesson-content');
+    var contentEl = document.querySelector('#lessonContent') || document.querySelector('.lesson-content');
     if (contentEl && lesson.content) {
       // El contenido puede ser HTML seguro (generado por nosotros, no por el usuario)
       contentEl.innerHTML = lesson.content;
     }
 
     // Meta información (categoría, duración, XP)
-    var categoryEl = document.querySelector('.lesson-category');
+    var categoryEl = document.querySelector('#lessonCategory') || document.querySelector('.lesson-category');
     if (categoryEl && lesson.category) {
-      categoryEl.textContent = lesson.category;
+      categoryEl.textContent = lesson.category.toUpperCase();
+      // Update chip color
+      categoryEl.className = 'chip chip-' + lesson.category.toLowerCase();
     }
 
-    var durationEl = document.querySelector('.lesson-duration');
-    if (durationEl && lesson.duration) {
-      durationEl.textContent = lesson.duration;
+    var levelEl = document.querySelector('#lessonLevel') || document.querySelector('.lesson-level');
+    if (levelEl && lesson.level) {
+      levelEl.textContent = '📊 ' + lesson.level;
     }
 
-    var xpEl = document.querySelector('.lesson-xp');
+    var xpEl = document.querySelector('#lessonXP') || document.querySelector('.lesson-xp');
     if (xpEl && lesson.xp) {
-      xpEl.textContent = lesson.xp + ' XP';
+      xpEl.textContent = '⚡ ' + lesson.xp + ' XP';
+    }
+
+    var numberEl = document.querySelector('#lessonNumber');
+    if (numberEl) {
+      numberEl.textContent = '📚 Lección ' + lessonId + ' de ' + window.lessons.length;
+    }
+    
+    var challengeEl = document.querySelector('#lessonChallenge');
+    if (challengeEl && lesson.challenge) {
+      challengeEl.textContent = lesson.challenge;
     }
 
     // --- Inicializar el editor con el código de la lección ---
-    var editorTextarea = document.querySelector('.editor-textarea');
+    var editorTextarea = document.querySelector('#editorTextarea') || document.querySelector('.editor-textarea');
     if (editorTextarea && lesson.initialCode) {
       editorTextarea.value = lesson.initialCode;
     }
 
     // Inicializar el editor
     if (window.WebCraftEditor) {
-      window.WebCraftEditor.init('.editor-container');
+      window.WebCraftEditor.init('#codeEditor');
     }
 
     // --- Botón de completar lección ---
-    var completeBtn = document.querySelector('.btn-complete');
+    var completeBtn = document.querySelector('#completeLesson') || document.querySelector('.btn-complete');
     if (completeBtn) {
       // Verificar si ya está completada
       if (window.WebCraftProgress && window.WebCraftProgress.isCompleted(lessonId)) {
@@ -714,6 +726,17 @@
       } else {
         completeBtn.addEventListener('click', function () {
           if (!window.WebCraftProgress) return;
+
+          // Verificar si el usuario ha modificado el código
+          var currentCode = editorTextarea ? editorTextarea.value.trim() : '';
+          var initialCode = lesson.initialCode ? lesson.initialCode.trim() : '';
+          
+          if (currentCode === initialCode) {
+            if (window.showToast) {
+              window.showToast('¡Intenta modificar el código primero para completar el reto! 👨‍💻', 'warning');
+            }
+            return;
+          }
 
           var xpReward = lesson.xp || 50;
           var result = window.WebCraftProgress.completeLesson(lessonId, xpReward);
@@ -750,8 +773,8 @@
     }
 
     // --- Navegación anterior/siguiente ---
-    var prevBtn = document.querySelector('.btn-prev');
-    var nextBtn = document.querySelector('.btn-next');
+    var prevBtn = document.querySelector('#prevLesson') || document.querySelector('.btn-prev');
+    var nextBtn = document.querySelector('#nextLesson') || document.querySelector('.btn-next');
 
     if (prevBtn) {
       if (lessonId > 1) {
@@ -806,9 +829,9 @@
       return;
     }
 
-    var roadmapContainer = document.querySelector('.roadmap-container') ||
-      document.querySelector('.lessons-grid') ||
-      document.querySelector('.lessons-container');
+    var roadmapContainer = document.querySelector('#roadmapContainer') ||
+      document.querySelector('.roadmap-container') ||
+      document.querySelector('.roadmap');
 
     if (!roadmapContainer) {
       console.warn('[WebCraft] No se encontró el contenedor del roadmap');
