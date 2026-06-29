@@ -1208,10 +1208,26 @@
       // --- Inicializar lógica específica de página ---
       initLessonPage();
       initLessonsPage();
+      initPlaygroundPage();
 
     } catch (e) {
       console.error('[WebCraft] Error durante la inicialización:', e);
     }
   });
+
+  /**
+   * Inicializa la lógica específica de la página del playground
+   */
+  function initPlaygroundPage() {
+    if (!window.location.pathname.includes('playground.html') && 
+        !window.location.pathname.includes('playground')) {
+      return;
+    }
+    
+    // Inicializar el editor
+    if (window.WebCraftEditor) {
+      window.WebCraftEditor.init('#codeEditor');
+    }
+  }
 
 })();
