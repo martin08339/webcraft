@@ -82,11 +82,52 @@
     }
 
     // Asegurar que el iframe tiene los atributos de seguridad correctos
-    state.iframe.setAttribute('sandbox', 'allow-scripts');
+    // Se añade allow-same-origin temporalmente para permitir postMessage si es estrictamente necesario 
+    // pero srcdoc en navegadores modernos envía mensaje de todos modos si lo configuramos bien
+    state.iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+
+    var interceptor = `
+      <script>
+        (function(){
+          function sendLog(type, args) {
+            var message = Array.from(args).map(function(arg) {
+              if (typeof arg === 'object') return JSON.stringify(arg);
+              return String(arg);
+            }).join(' ');
+            window.parent.postMessage({ source: 'webcraft-console', type: type, message: message }, '*');
+          }
+          var oldLog = console.log;
+          console.log = function() {
+            sendLog('log', arguments);
+            oldLog.apply(console, arguments);
+          };
+          var oldError = console.error;
+          console.error = function() {
+            sendLog('error', arguments);
+            oldError.apply(console, arguments);
+          };
+          var oldWarn = console.warn;
+          console.warn = function() {
+            sendLog('warn', arguments);
+            oldWarn.apply(console, arguments);
+          };
+          window.addEventListener('error', function(e) {
+            sendLog('error', [e.message + ' en linea ' + e.lineno]);
+          });
+        })();
+      <\/script>
+    `;
+
+    // Si el usuario pone un head, lo inyectamos ahí, si no al inicio
+    var finalCode = code;
+    if (code.includes('<head>')) {
+      finalCode = code.replace('<head>', '<head>' + interceptor);
+    } else {
+      finalCode = interceptor + code;
+    }
 
     // Usar srcdoc para cargar el contenido de forma segura
-    // El código del usuario se ejecuta SOLO dentro del iframe sandboxed
-    state.iframe.setAttribute('srcdoc', code);
+    state.iframe.setAttribute('srcdoc', finalCode);
   }
 
   // =====================
@@ -159,6 +200,61 @@
     // Manejo de Tab
     setupTabHandling(state.textarea);
 
+    // Lógica para Pestañas (Vista Previa vs Consola)
+    var outputTabs = state.container.querySelectorAll('#outputTabs .editor-tab');
+    var previewContainerDiv = state.container.querySelector('#previewContainer');
+    var consoleContainerDiv = state.container.querySelector('#consoleContainer');
+
+    if (outputTabs.length > 0 && consoleContainerDiv) {
+      for(var k = 0; k < outputTabs.length; k++) {
+        outputTabs[k].addEventListener('click', function(e) {
+          // Remover activo de todos
+          for(var m = 0; m < outputTabs.length; m++) outputTabs[m].classList.remove('active');
+          e.target.classList.add('active');
+
+          var target = e.target.getAttribute('data-target');
+          if (target === 'console') {
+            previewContainerDiv.classList.add('hidden');
+            consoleContainerDiv.classList.remove('hidden');
+          } else {
+            consoleContainerDiv.classList.add('hidden');
+            previewContainerDiv.classList.remove('hidden');
+          }
+        });
+      }
+
+      // Escuchar mensajes de la consola inyectada
+      window.addEventListener('message', function(event) {
+        if (event.data && event.data.source === 'webcraft-console') {
+          var div = document.createElement('div');
+          div.style.marginBottom = '4px';
+          div.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+          div.style.paddingBottom = '4px';
+          
+          if (event.data.type === 'error') {
+            div.style.color = '#ef4444'; // Rojo
+            div.textContent = '❌ ' + event.data.message;
+          } else if (event.data.type === 'warn') {
+            div.style.color = '#f59e0b'; // Naranja
+            div.textContent = '⚠️ ' + event.data.message;
+          } else {
+            div.style.color = '#10b981'; // Verde
+            div.textContent = '> ' + event.data.message;
+          }
+          
+          consoleContainerDiv.appendChild(div);
+          consoleContainerDiv.scrollTop = consoleContainerDiv.scrollHeight;
+
+          // Animación para avisar que hay mensaje en consola si no estamos viéndola
+          var consoleTab = state.container.querySelector('[data-target="console"]');
+          if (consoleTab && !consoleTab.classList.contains('active')) {
+            consoleTab.style.animation = 'glow 1s ease-in-out infinite alternate';
+            setTimeout(function() { consoleTab.style.animation = ''; }, 3000);
+          }
+        }
+      });
+    }
+
     // Marcar como inicializado
     state.initialized = true;
 
@@ -177,6 +273,12 @@
     }
 
     var code = state.textarea.value;
+
+    // Limpiar consola
+    var consoleContainerDiv = state.container.querySelector('#consoleContainer');
+    if (consoleContainerDiv) {
+      consoleContainerDiv.innerHTML = '<div style="color: #8888a0; font-style: italic; margin-bottom: 8px;">> Ejecutando código...</div>';
+    }
 
     // Ejecutar en el iframe sandboxed
     executeInIframe(code);

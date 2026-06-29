@@ -44,6 +44,30 @@
   --transition: all 0.3s ease;
 }
 
+[data-theme="light"] {
+  /* Backgrounds */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-card: #f1f5f9;
+  --bg-card-hover: #e2e8f0;
+
+  /* Accent Colors (Slightly adjusted for light mode if needed) */
+  --accent-cyan: #0284c7; /* Darker cyan for readability */
+  --accent-purple: #6d28d9;
+  --accent-pink: #db2777;
+  --accent-green: #059669;
+
+  /* Text Colors */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  /* Borders & Shadows */
+  --border: #cbd5e1;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --glass: rgba(255, 255, 255, 0.8);
+}
+
 /* ============================================
    Global Reset
    ============================================ */

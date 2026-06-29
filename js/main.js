@@ -849,6 +849,71 @@
               if (!cssText10.includes('@media')) { isValid = false; missingMessage = 'Falta la media query (@media).'; break; }
               if (!cssText10.includes('grid-column: span 2')) { isValid = false; missingMessage = 'Haz que un elemento ocupe dos columnas con grid-column: span 2.'; break; }
               break;
+
+            case 11:
+              var script11 = doc.querySelector('script');
+              if (!script11) { isValid = false; missingMessage = 'Escribe tu código dentro de <script>.'; break; }
+              var code11 = script11.textContent;
+              if (!code11.includes('let mensaje')) { isValid = false; missingMessage = 'Debes declarar una variable let llamada mensaje.'; break; }
+              if (!code11.includes('console.log(mensaje)')) { isValid = false; missingMessage = 'Usa console.log(mensaje) para mostrarla.'; break; }
+              break;
+
+            case 12:
+              var script12 = doc.querySelector('script');
+              if (!script12) { isValid = false; missingMessage = 'Falta <script>.'; break; }
+              var code12 = script12.textContent;
+              if (!code12.includes('return')) { isValid = false; missingMessage = 'Debes usar la palabra clave return.'; break; }
+              if (!code12.includes('Bienvenido a JS')) { isValid = false; missingMessage = 'Debes retornar exactamente "Bienvenido a JS".'; break; }
+              break;
+
+            case 13:
+              var script13 = doc.querySelector('script');
+              if (!script13) { isValid = false; missingMessage = 'Falta <script>.'; break; }
+              var code13 = script13.textContent;
+              if (!code13.includes('if')) { isValid = false; missingMessage = 'Falta el if.'; break; }
+              if (!code13.includes('else')) { isValid = false; missingMessage = 'Falta el else.'; break; }
+              if (!code13.includes('Mayor') || !code13.includes('Menor')) { isValid = false; missingMessage = 'Asigna "Mayor" y "Menor" a la variable resultado.'; break; }
+              break;
+
+            case 14:
+              var script14 = doc.querySelector('script');
+              if (!script14) { isValid = false; missingMessage = 'Falta <script>.'; break; }
+              var code14 = script14.textContent;
+              if (!code14.includes('for')) { isValid = false; missingMessage = 'Debes usar un bucle for.'; break; }
+              break;
+
+            case 15:
+              var script15 = doc.querySelector('script');
+              if (!script15) { isValid = false; missingMessage = 'Falta <script>.'; break; }
+              var code15 = script15.textContent;
+              if (!code15.includes('getElementById')) { isValid = false; missingMessage = 'Falta document.getElementById.'; break; }
+              if (!code15.includes('textContent') && !code15.includes('innerHTML')) { isValid = false; missingMessage = 'Modifica el textContent o innerHTML.'; break; }
+              if (!code15.includes('JS activado')) { isValid = false; missingMessage = 'El texto debe ser "JS activado".'; break; }
+              break;
+
+            case 16:
+              var script16 = doc.querySelector('script');
+              if (!script16) { isValid = false; missingMessage = 'Falta <script>.'; break; }
+              var code16 = script16.textContent;
+              if (!code16.includes('let productos') && !code16.includes('const productos')) { isValid = false; missingMessage = 'Debes crear un arreglo productos.'; break; }
+              if (!code16.includes('{') || !code16.includes('id') || !code16.includes('nombre')) { isValid = false; missingMessage = 'El arreglo debe contener objetos con id y nombre.'; break; }
+              break;
+
+            case 17:
+              var script17 = doc.querySelector('script');
+              if (!script17) { isValid = false; missingMessage = 'Falta <script>.'; break; }
+              var code17 = script17.textContent;
+              if (!code17.includes('.filter')) { isValid = false; missingMessage = 'Debes usar el método .filter().'; break; }
+              if (!code17.includes('activos')) { isValid = false; missingMessage = 'Guárdalo en la variable activos.'; break; }
+              break;
+
+            case 18:
+              var script18 = doc.querySelector('script');
+              if (!script18) { isValid = false; missingMessage = 'Falta <script>.'; break; }
+              var code18 = script18.textContent;
+              if (!code18.includes('for')) { isValid = false; missingMessage = 'Falta el bucle sobre los datos.'; break; }
+              if (!code18.includes('innerHTML')) { isValid = false; missingMessage = 'Usa innerHTML para inyectar los <tr> y <td>.'; break; }
+              break;
           }
 
           if (!isValid) {
@@ -937,43 +1002,76 @@
   // =====================
   // Lógica de la página de lecciones (lecciones.html)
   // =====================
+  var activeCourse = 'html-css';
 
   /**
    * Inicializa la lógica específica de la página del roadmap de lecciones.
-   * Renderiza las lecciones con su estado (completada, disponible, bloqueada).
    */
   function initLessonsPage() {
-    // Verificar que estamos en la página de lecciones
     var path = window.location.pathname;
-    if (!path.includes('lecciones.html') && !path.includes('lecciones')) {
-      return;
+    if (!path.includes('lecciones.html') && !path.includes('lecciones')) return;
+    if (!window.lessons || !Array.isArray(window.lessons)) return;
+
+    var tabs = document.querySelectorAll('.course-tab');
+    if (tabs.length > 0) {
+      for(var i = 0; i < tabs.length; i++) {
+        tabs[i].addEventListener('click', function(e) {
+          var tabsArr = document.querySelectorAll('.course-tab');
+          for(var j = 0; j < tabsArr.length; j++) {
+            tabsArr[j].classList.remove('active');
+            tabsArr[j].classList.remove('btn-primary');
+            tabsArr[j].classList.add('btn-ghost');
+          }
+          e.target.classList.remove('btn-ghost');
+          e.target.classList.add('active');
+          e.target.classList.add('btn-primary');
+          
+          activeCourse = e.target.getAttribute('data-course');
+          renderRoadmap(activeCourse);
+        });
+      }
     }
 
-    // Verificar que existe el array de lecciones
-    if (!window.lessons || !Array.isArray(window.lessons)) {
-      console.warn('[WebCraft] No se encontró el array de lecciones (window.lessons)');
-      return;
-    }
+    renderRoadmap(activeCourse);
 
+    // --- Funcionalidad del botón de reiniciar progreso ---
+    var resetBtn = document.querySelector('#resetProgress');
+    if (resetBtn && window.WebCraftProgress) {
+      resetBtn.addEventListener('click', function () {
+        if (confirm('¿Estás seguro de que quieres reiniciar todo tu progreso? Perderás todas tus lecciones completadas, insignias, XP y rachas. Esta acción no se puede deshacer.')) {
+          window.WebCraftProgress.reset();
+          if (window.WebCraftBadges && typeof window.WebCraftBadges.reset === 'function') {
+            window.WebCraftBadges.reset();
+          }
+          if (window.showToast) {
+            window.showToast('Progreso reiniciado correctamente', 'success');
+          }
+          setTimeout(function() {
+            window.location.reload();
+          }, 1000);
+        }
+      });
+    }
+  }
+
+  function renderRoadmap(courseId) {
     var roadmapContainer = document.querySelector('#roadmapContainer') ||
       document.querySelector('.roadmap-container') ||
       document.querySelector('.roadmap');
 
-    if (!roadmapContainer) {
-      console.warn('[WebCraft] No se encontró el contenedor del roadmap');
-      return;
-    }
+    if (!roadmapContainer) return;
 
-    // Construir el roadmap
     var html = '';
-    for (var i = 0; i < window.lessons.length; i++) {
-      var lesson = window.lessons[i];
+    var courseLessons = window.lessons.filter(function(l) { return l.course === courseId; });
+
+    for (var i = 0; i < courseLessons.length; i++) {
+      var lesson = courseLessons[i];
       var lessonId = lesson.id;
 
       // Determinar el estado de la lección
       var isCompleted = window.WebCraftProgress && window.WebCraftProgress.isCompleted(lessonId);
-      var prevCompleted = lessonId === 1 ||
-        (window.WebCraftProgress && window.WebCraftProgress.isCompleted(lessonId - 1));
+      var prevCompleted = i === 0 ||
+        (window.WebCraftProgress && window.WebCraftProgress.isCompleted(courseLessons[i-1].id));
       var isAvailable = prevCompleted && !isCompleted;
       var isLocked = !isCompleted && !prevCompleted;
 
@@ -1051,33 +1149,11 @@
       badgesContainer.innerHTML = badgesHTML;
     }
 
-    // --- Funcionalidad del botón de reiniciar progreso ---
-    var resetBtn = document.querySelector('#resetProgress');
-    if (resetBtn && window.WebCraftProgress) {
-      resetBtn.addEventListener('click', function () {
-        if (confirm('¿Estás seguro de que quieres reiniciar todo tu progreso? Perderás todas tus lecciones completadas, insignias, XP y rachas. Esta acción no se puede deshacer.')) {
-          window.WebCraftProgress.reset();
-          if (window.WebCraftBadges && typeof window.WebCraftBadges.reset === 'function') {
-            window.WebCraftBadges.reset();
-          }
-          if (window.showToast) {
-            window.showToast('Progreso reiniciado correctamente', 'success');
-          }
-          // Recargar la página después de un breve momento para reflejar los cambios
-          setTimeout(function() {
-            window.location.reload();
-          }, 1000);
-        }
-      });
-    }
-
-    // Re-inicializar animaciones de scroll para los nuevos elementos
     setupScrollAnimations();
 
     // --- Lógica del Certificado ---
-    var progressPercent = window.WebCraftProgress ? window.WebCraftProgress.getPercentage(10) : 0;
+    var progressPercent = window.WebCraftProgress ? window.WebCraftProgress.getPercentage(10, courseId) : 0;
     
-    // Si tiene 100%, mostrar un botón para el certificado
     if (progressPercent === 100) {
       var certBtnHtml = '<div class="lesson-card animate-on-scroll" style="text-align: center; border-color: var(--accent-cyan); background: var(--bg-card-hover);"><h3 style="color: var(--accent-cyan); margin-bottom: 12px;">🎓 ¡Felicidades! Has completado el curso</h3><p style="margin-bottom: 20px; color: var(--text-secondary);">Reclama tu certificado de graduación.</p><button class="btn btn-primary" id="btnOpenCertModal">Generar Certificado</button></div>';
       roadmapContainer.insertAdjacentHTML('afterbegin', certBtnHtml);
@@ -1094,20 +1170,28 @@
           if (window.WebCraftSounds) window.WebCraftSounds.playBadgeUnlock();
         });
 
-        btnCloseCert.addEventListener('click', function() {
-          certModal.classList.remove('active');
-        });
+        if (btnCloseCert) {
+          // Remover event listeners anteriores para no duplicarlos (usando cloneNode o simplemente asignando de nuevo)
+          var newBtnClose = btnCloseCert.cloneNode(true);
+          btnCloseCert.parentNode.replaceChild(newBtnClose, btnCloseCert);
+          newBtnClose.addEventListener('click', function() {
+            certModal.classList.remove('active');
+          });
+        }
 
-        btnGenCert.addEventListener('click', function() {
-          var name = certName.value.trim();
-          if (!name) {
-            showToast('❌ Por favor ingresa tu nombre', 'warning');
-            if (window.WebCraftSounds) window.WebCraftSounds.playError();
-            return;
-          }
-          
-          generateCertificate(name);
-        });
+        if (btnGenCert) {
+          var newBtnGen = btnGenCert.cloneNode(true);
+          btnGenCert.parentNode.replaceChild(newBtnGen, btnGenCert);
+          newBtnGen.addEventListener('click', function() {
+            var name = certName.value.trim();
+            if (!name) {
+              showToast('❌ Por favor ingresa tu nombre', 'warning');
+              if (window.WebCraftSounds) window.WebCraftSounds.playError();
+              return;
+            }
+            generateCertificate(name, courseId);
+          });
+        }
       }
     }
   }
@@ -1115,7 +1199,7 @@
   /**
    * Genera y descarga un certificado usando Canvas
    */
-  function generateCertificate(name) {
+  function generateCertificate(name, courseId) {
     var canvas = document.createElement('canvas');
     canvas.width = 1200;
     canvas.height = 800;
@@ -1160,11 +1244,15 @@
     ctx.fillStyle = '#00d4ff';
     ctx.fillText(name, canvas.width / 2, 450);
 
-    // Descripción
+    // Descripción del curso basada en el courseId
+    var courseName = "Fundamentos de HTML y CSS";
+    if (courseId === 'javascript') courseName = "Lógica y Programación JavaScript";
+    if (courseId === 'database') courseName = "Integración de Datos Web";
+
     ctx.font = '24px sans-serif';
     ctx.fillStyle = '#e8e8ed';
-    ctx.fillText('Por haber completado con éxito el curso "Fundamentos de HTML y CSS"', canvas.width / 2, 550);
-    ctx.fillText('demostrando dominio en la estructuración y estilización de páginas web.', canvas.width / 2, 590);
+    ctx.fillText('Por haber completado con éxito el curso "' + courseName + '"', canvas.width / 2, 550);
+    ctx.fillText('demostrando dominio sobresaliente en desarrollo web.', canvas.width / 2, 590);
 
     // Fecha
     var today = new Date().toLocaleDateString('es-ES');
@@ -1174,7 +1262,7 @@
 
     // Descargar imagen
     var link = document.createElement('a');
-    link.download = 'Certificado_WebCraft_' + name.replace(/\s+/g, '_') + '.png';
+    link.download = 'Certificado_' + courseId + '_' + name.replace(/\s+/g, '_') + '.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
     
@@ -1187,6 +1275,29 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     try {
+      // --- Tema Claro / Oscuro ---
+      var themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        var currentTheme = localStorage.getItem('webcraft_theme') || 'dark';
+        if (currentTheme === 'light') {
+          document.body.setAttribute('data-theme', 'light');
+          themeToggle.textContent = '🌙';
+        }
+        
+        themeToggle.addEventListener('click', function() {
+          var isLight = document.body.getAttribute('data-theme') === 'light';
+          if (isLight) {
+            document.body.removeAttribute('data-theme');
+            localStorage.setItem('webcraft_theme', 'dark');
+            themeToggle.textContent = '☀️';
+          } else {
+            document.body.setAttribute('data-theme', 'light');
+            localStorage.setItem('webcraft_theme', 'light');
+            themeToggle.textContent = '🌙';
+          }
+        });
+      }
+
       // --- Inicializar sistemas ---
       if (window.WebCraftProgress) {
         window.WebCraftProgress.init();

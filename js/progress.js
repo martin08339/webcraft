@@ -308,11 +308,23 @@
 
   /**
    * Devuelve el porcentaje de progreso (0-100)
-   * @param {number} totalLessons - Total de lecciones disponibles
+   * @param {number} totalLessons - Total de lecciones disponibles (fallback si no hay curso)
+   * @param {string} courseName - (Opcional) Nombre del curso para calcular el progreso específico
    * @returns {number}
    */
-  WebCraftProgress.getPercentage = function (totalLessons) {
+  WebCraftProgress.getPercentage = function (totalLessons, courseName) {
     if (data === null) return 0;
+
+    if (courseName && window.lessons) {
+      var courseLessons = window.lessons.filter(function(l) { return l.course === courseName; });
+      var completedCourseLessons = courseLessons.filter(function(l) { 
+        return data.completedLessons.indexOf(l.id) !== -1; 
+      });
+      var courseTotal = courseLessons.length > 0 ? courseLessons.length : 1;
+      var percentage = (completedCourseLessons.length / courseTotal) * 100;
+      return Math.min(100, Math.max(0, Math.round(percentage)));
+    }
+
     totalLessons = (typeof totalLessons === 'number' && isFinite(totalLessons) && totalLessons > 0)
       ? totalLessons
       : 1;

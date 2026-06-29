@@ -13,6 +13,7 @@ const lessons = [
   {
     id: 1,
     title: "¿Qué es HTML? Introducción",
+    course: "html-css",
     category: "html",
     level: "Principiante",
     xp: 100,
@@ -95,6 +96,7 @@ apertura          cierre
   {
     id: 2,
     title: "Etiquetas de texto: encabezados, párrafos y enlaces",
+    course: "html-css",
     category: "html",
     level: "Principiante",
     xp: 120,
@@ -196,6 +198,7 @@ apertura          cierre
   {
     id: 3,
     title: "Imágenes, listas y estructura semántica",
+    course: "html-css",
     category: "html",
     level: "Principiante",
     xp: 130,
@@ -332,6 +335,7 @@ apertura          cierre
   {
     id: 4,
     title: "Formularios e inputs",
+    course: "html-css",
     category: "html",
     level: "Intermedio",
     xp: 150,
@@ -478,6 +482,7 @@ apertura          cierre
   {
     id: 5,
     title: "Tablas y multimedia",
+    course: "html-css",
     category: "html",
     level: "Intermedio",
     xp: 140,
@@ -638,6 +643,7 @@ apertura          cierre
   {
     id: 6,
     title: "¿Qué es CSS? Introducción",
+    course: "html-css",
     category: "css",
     level: "Principiante",
     xp: 100,
@@ -818,6 +824,7 @@ background-color: rgba(255, 255, 255, 0.8);  /* Blanco al 80% */</code></pre>
   {
     id: 7,
     title: "Selectores y propiedades básicas",
+    course: "html-css",
     category: "css",
     level: "Intermedio",
     xp: 130,
@@ -1036,6 +1043,7 @@ li:nth-child(3n) {
   {
     id: 8,
     title: "Box Model: margin, padding y border",
+    course: "html-css",
     category: "css",
     level: "Intermedio",
     xp: 150,
@@ -1248,6 +1256,7 @@ li:nth-child(3n) {
   {
     id: 9,
     title: "Flexbox: layouts modernos",
+    course: "html-css",
     category: "css",
     level: "Avanzado",
     xp: 180,
@@ -1503,6 +1512,7 @@ nav .enlaces a:hover {
   {
     id: 10,
     title: "CSS Grid y diseño responsivo",
+    course: "html-css",
     category: "css",
     level: "Avanzado",
     xp: 200,
@@ -1799,8 +1809,287 @@ grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 </html>`,
     challenge: "Crea una galería responsiva de al menos 6 elementos usando CSS Grid. Usa repeat(auto-fit, minmax(280px, 1fr)) para que se adapte automáticamente. Cada elemento debe tener una imagen de fondo con gradiente, un título y descripción. Añade media queries para que en pantallas menores a 600px la galería muestre solo 1 columna, y haz que uno de los elementos ocupe 2 columnas en escritorio usando grid-column: span 2."
   }
+  ,
 
+  // ============================================================
+  // CURSO 2: JAVASCRIPT Y LÓGICA (Lecciones 11-15)
+  // ============================================================
+  {
+    id: 11,
+    title: "Introducción a JavaScript y Variables",
+    course: "javascript",
+    category: "js",
+    level: "Principiante",
+    xp: 200,
+    description: "Conoce el lenguaje de la web. Aprende a crear variables y mostrar mensajes.",
+    icon: "🟨",
+    content: `
+      <h2>¿Qué es JavaScript?</h2>
+      <p>Mientras que HTML es el esqueleto de la web y CSS es su ropa y estilo, <strong>JavaScript (JS) es el cerebro y los músculos</strong>. Es el lenguaje de programación que le da interactividad a las páginas.</p>
+      
+      <h3>La Consola</h3>
+      <p>Para ver qué está pasando por dentro de JS, usamos la consola. El comando <code>console.log()</code> nos permite imprimir mensajes.</p>
+      <pre><code>console.log("¡Hola desde la consola!");</code></pre>
+      
+      <h3>Variables: La memoria de JS</h3>
+      <p>Una variable es como una "caja" donde guardamos datos para usarlos después. En JS moderno usamos <code>let</code> para variables que pueden cambiar y <code>const</code> para valores fijos.</p>
+      <pre><code>let jugador = "Mario"; // Creamos la variable
+jugador = "Luigi";   // Cambiamos su valor (no se vuelve a usar 'let')
+
+const vidas = 3;     // Creamos una constante (no se puede cambiar)</code></pre>
+
+      <h3>Ejemplo completo:</h3>
+      <pre><code>let puntaje = 100;
+console.log("Tu puntaje actual es:");
+console.log(puntaje);</code></pre>
+    `,
+    initialCode: "<script>\n// Escribe tu código JS aquí\n\n</script>",
+    challenge: "Dentro de la etiqueta <script>, crea una variable let llamada 'mensaje' con el texto 'Hola Mundo' y muéstrala usando console.log(mensaje)."
+  },
+  {
+    id: 12,
+    title: "Funciones y Reutilización",
+    course: "javascript",
+    category: "js",
+    level: "Principiante",
+    xp: 210,
+    description: "Aprende a empaquetar código en funciones para no repetirte.",
+    icon: "⚙️",
+    content: `
+      <h2>Funciones: Empaquetando código</h2>
+      <p>Imagina que tienes que hacer limonada. Necesitas cortar limones, exprimirlos, agregar agua y azúcar. Si vas a hacer limonada 10 veces, no quieres escribir las mismas instrucciones 10 veces. <strong>Las funciones agrupan lógica</strong> para ser usada múltiples veces.</p>
+      
+      <h3>Creando una función</h3>
+      <p>Usamos la palabra clave <code>function</code> seguida del nombre, paréntesis <code>()</code> y llaves <code>{}</code> que encierran las instrucciones.</p>
+      <pre><code>function hacerLimonada() {
+  console.log("Cortar limones");
+  console.log("Exprimir y mezclar");
+}
+
+hacerLimonada(); // Llamamos a la función
+hacerLimonada(); // ¡Llamarla es muy fácil!</code></pre>
+
+      <h3>Retornando valores (Return)</h3>
+      <p>A veces no queremos que la función solo imprima algo, sino que nos <strong>devuelva</strong> un resultado para guardarlo en una variable. Usamos <code>return</code>.</p>
+      <pre><code>function sumar() {
+  let resultado = 5 + 5;
+  return resultado; // La función devuelve 10
+}
+
+let miSuma = sumar();
+console.log(miSuma); // Imprime 10</code></pre>
+    `,
+    initialCode: "<script>\nfunction saludar() {\n\n}\n</script>",
+    challenge: "Completa la función 'saludar' para que retorne (usando return) exactamente el texto 'Bienvenido a JS'. No necesitas llamar a la función, solo hacer que retorne el valor correcto."
+  },
+  {
+    id: 13,
+    title: "Condicionales (If / Else)",
+    course: "javascript",
+    category: "js",
+    level: "Intermedio",
+    xp: 220,
+    description: "Toma decisiones en tu código basándote en condiciones lógicas.",
+    icon: "🔀",
+    content: `
+      <h2>Tomando decisiones lógicas</h2>
+      <p>Los programas necesitan tomar caminos diferentes dependiendo de lo que ocurra. <strong>Si (if)</strong> llueve, me pongo abrigo; <strong>sino (else)</strong>, me pongo camiseta.</p>
+      
+      <h3>Sintaxis Básica</h3>
+      <p>Usamos <code>if (condicion) { ... }</code>. La condición debe ser algo que JS pueda evaluar como Verdadero o Falso.</p>
+      <pre><code>let dinero = 50;
+
+if (dinero >= 100) {
+  console.log("¡Puedes comprar el juego!");
+} else {
+  console.log("Aún te falta ahorrar.");
+}</code></pre>
+
+      <h3>Operadores de comparación</h3>
+      <ul>
+        <li><code>></code> (Mayor que), <code><</code> (Menor que)</li>
+        <li><code>>=</code> (Mayor o igual), <code><=</code> (Menor o igual)</li>
+        <li><code>===</code> (Exactamente igual)</li>
+        <li><code>!==</code> (Diferente a)</li>
+      </ul>
+      <pre><code>let password = "1234";
+if (password === "secreta") {
+  console.log("Acceso concedido");
+}</code></pre>
+    `,
+    initialCode: "<script>\nlet edad = 18;\nlet resultado = '';\n// Escribe tu condicional if/else aquí\n\n</script>",
+    challenge: "Escribe un condicional (if / else). Si 'edad' es mayor o igual a 18 (>=), asigna la palabra 'Mayor' a la variable 'resultado', sino (else) asígnale 'Menor'."
+  },
+  {
+    id: 14,
+    title: "Bucles y Arreglos",
+    course: "javascript",
+    category: "js",
+    level: "Intermedio",
+    xp: 230,
+    description: "Aprende a repetir tareas automáticamente y almacenar listas de elementos.",
+    icon: "🔁",
+    content: `
+      <h2>Arreglos (Arrays): Listas de datos</h2>
+      <p>Un arreglo es una colección de elementos. Se declaran usando corchetes <code>[]</code> y separando los elementos con comas.</p>
+      <pre><code>let colores = ["Rojo", "Azul", "Verde"];
+console.log(colores[0]); // Imprime "Rojo" (¡empezamos a contar desde 0!)
+console.log(colores.length); // Imprime 3 (la cantidad de elementos)</code></pre>
+
+      <h2>Bucles (For): Repetición automática</h2>
+      <p>Si quisieras imprimir 100 veces algo, no escribirías 100 <code>console.log</code>. Usas un bucle <code>for</code>.</p>
+      <p>El bucle for tiene 3 partes separadas por <code>;</code></p>
+      <ol>
+        <li><strong>Inicio:</strong> <code>let i = 0</code> (Creamos un contador i en 0)</li>
+        <li><strong>Condición:</strong> <code>i < 5</code> (Mientras i sea menor a 5, repite el bloque)</li>
+        <li><strong>Avance:</strong> <code>i++</code> (Aumenta i en 1 en cada vuelta)</li>
+      </ol>
+      <pre><code>for (let i = 0; i < 3; i++) {
+  console.log("Vuelta número: " + i);
+}</code></pre>
+
+      <h3>Iterando un arreglo</h3>
+      <pre><code>let gatos = ["Luna", "Simba", "Milo"];
+for (let i = 0; i < gatos.length; i++) {
+  console.log("Hola gatito " + gatos[i]);
+}</code></pre>
+    `,
+    initialCode: "<script>\nlet frutas = ['Manzana', 'Pera', 'Uva'];\n// Escribe tu bucle for aquí para iterar frutas\n\n</script>",
+    challenge: "Dentro de <script>, usa un bucle 'for' para recorrer el arreglo frutas. Configura el inicio (let i = 0), la condición (i < frutas.length) y el incremento (i++). Dentro del bucle no importa qué pongas (ej. console.log(frutas[i]))."
+  },
+  {
+    id: 15,
+    title: "Manipulación del DOM",
+    course: "javascript",
+    category: "js",
+    level: "Avanzado",
+    xp: 300,
+    description: "Conecta tu JavaScript con el HTML para crear interactividad real en pantalla.",
+    icon: "🖱️",
+    content: `
+      <h2>El DOM (Document Object Model)</h2>
+      <p>Hasta ahora, JavaScript ha estado corriendo en la consola, invisible en la pantalla. El DOM es el "puente" que permite que JS modifique el HTML de tu página en tiempo real.</p>
+      
+      <h3>Obtener elementos</h3>
+      <p>Para cambiar algo, primero debemos seleccionarlo. La forma más común es asignándole un <code>id</code> en HTML y buscándolo con <code>document.getElementById()</code>.</p>
+      <pre><code>// HTML: <p id="mensaje">Hola</p>
+
+let parrafo = document.getElementById("mensaje");</code></pre>
+
+      <h3>Modificar elementos</h3>
+      <p>Una vez seleccionado, podemos cambiar su texto usando <code>.textContent</code> o inyectar HTML nuevo usando <code>.innerHTML</code>.</p>
+      <pre><code>// Cambiar solo el texto
+parrafo.textContent = "¡Texto cambiado por JS!";
+
+// Inyectar HTML
+parrafo.innerHTML = "<strong>Texto en negrita por JS</strong>";</code></pre>
+    `,
+    initialCode: "<body>\n  <h1 id='titulo'>Texto original</h1>\n  <script>\n  // Cambia el texto del h1 obteniéndolo por su ID\n  \n  </script>\n</body>",
+    challenge: "Dentro de <script>, usa document.getElementById('titulo').textContent para seleccionar el <h1> y cambiar su texto exactamente a 'JS activado'."
+  },
+
+  // ============================================================
+  // CURSO 3: BASES DE DATOS Y WEB (Lecciones 16-18)
+  // ============================================================
+  {
+    id: 16,
+    title: "¿Qué es una Base de Datos?",
+    course: "database",
+    category: "js",
+    level: "Intermedio",
+    xp: 250,
+    description: "Conceptos básicos de tablas, filas y columnas simulando consultas con arreglos de objetos.",
+    icon: "🗄️",
+    content: `
+      <h2>Bases de datos en el Frontend</h2>
+      <p>En el backend se usan bases de datos formales (SQL, Mongo, Postgres). Cuando esos datos viajan al Frontend (tu página web), casi siempre llegan en forma de <strong>Arreglos de Objetos (JSON)</strong>.</p>
+      
+      <h3>Objetos en JavaScript</h3>
+      <p>Un objeto agrupa características de una sola entidad usando propiedades y valores dentro de llaves <code>{}</code>.</p>
+      <pre><code>let persona = {
+  nombre: "Ana",
+  edad: 25,
+  activo: true
+};
+console.log(persona.nombre); // Imprime "Ana"</code></pre>
+
+      <h3>Simulando una Tabla</h3>
+      <p>Si combinamos Arreglos (listas) y Objetos (filas), ¡tenemos una tabla de Base de Datos!</p>
+      <pre><code>// Esto equivale a una tabla "usuarios" con columnas id, nombre, edad
+let usuarios = [
+  { id: 1, nombre: "Ana", edad: 25 },
+  { id: 2, nombre: "Luis", edad: 30 },
+  { id: 3, nombre: "María", edad: 19 }
+];</code></pre>
+    `,
+    initialCode: "<script>\n// Crea tu arreglo productos\n\n</script>",
+    challenge: "Crea una variable let llamada 'productos' que sea un arreglo <code>[]</code>. Dentro del arreglo coloca al menos 2 objetos <code>{}</code>. Cada objeto debe tener una propiedad 'id' (número) y una propiedad 'nombre' (texto)."
+  },
+  {
+    id: 17,
+    title: "Consultas (SELECT WHERE)",
+    course: "database",
+    category: "js",
+    level: "Avanzado",
+    xp: 280,
+    description: "Aprende a filtrar y buscar datos simulando consultas a una BD en el Frontend.",
+    icon: "🔍",
+    content: `
+      <h2>Filtrado de Datos (Consultas WHERE)</h2>
+      <p>Cuando recibes cientos de productos de la base de datos, a veces solo quieres mostrar "Los que cuestan menos de $50" o "Los usuarios activos".</p>
+      <p>En bases de datos SQL usaríamos <code>SELECT * FROM usuarios WHERE activo = true</code>. En el Frontend usando JavaScript moderno, logramos lo mismo usando el método <strong><code>.filter()</code></strong>.</p>
+      
+      <h3>El método .filter()</h3>
+      <p><code>.filter()</code> crea un nuevo arreglo con todos los elementos que pasen una prueba (condición).</p>
+      <pre><code>let juegos = [
+  { titulo: "Zelda", precio: 60 },
+  { titulo: "Hollow Knight", precio: 15 },
+  { titulo: "Stardew Valley", precio: 15 }
+];
+
+// Queremos los juegos baratos (precio menor a 20)
+// Explicación: "De cada (juego) retorna los que (juego.precio < 20)"
+let baratos = juegos.filter(juego => juego.precio < 20);
+
+console.log(baratos); 
+// Imprime un arreglo con Hollow Knight y Stardew Valley</code></pre>
+    `,
+    initialCode: "<script>\nlet usuarios = [\n  { id: 1, nombre: 'Ana', activo: true },\n  { id: 2, nombre: 'Luis', activo: false },\n  { id: 3, nombre: 'Marta', activo: true }\n];\n\n// Usa filter aquí\n\n</script>",
+    challenge: "Usa el método <code>usuarios.filter(u => u.activo === true)</code> para buscar a los usuarios activos y guarda el resultado en una variable let llamada 'activos'."
+  },
+  {
+    id: 18,
+    title: "Renderizar Datos Dinámicos",
+    course: "database",
+    category: "html",
+    level: "Experto",
+    xp: 350,
+    description: "Combina el poder de arreglos (BD simulada) y HTML para inyectar filas de una tabla dinámicamente.",
+    icon: "📊",
+    content: `
+      <h2>Renderizado Dinámico: El paso final</h2>
+      <p>Las aplicaciones modernas como Facebook, Netflix o Amazon no escriben el código HTML a mano para cada publicación, película o producto. En su lugar, <strong>JavaScript lee los datos de la Base de Datos y genera el HTML automáticamente.</strong></p>
+      
+      <h3>El bucle for para generar HTML</h3>
+      <p>Podemos iterar nuestro arreglo de datos (simulando que llegaron de la BD) y sumar <code><tr></code> y <code><td></code> a la propiedad <code>innerHTML</code> de nuestra tabla.</p>
+      <pre><code>let tareas = [
+  { id: 1, texto: "Comprar pan" },
+  { id: 2, texto: "Pasear al perro" }
+];
+
+let lista = document.getElementById("miLista"); // Seleccionamos <ul>
+
+for(let i = 0; i < tareas.length; i++) {
+  // Sumamos HTML nuevo conservando el anterior ( += )
+  lista.innerHTML += "<li>" + tareas[i].texto + "</li>";
+}</code></pre>
+      <p>El código superior inyectará dos <code>&lt;li&gt;</code> al instante en la pantalla sin importar si hay 2 o 2,000 elementos en el arreglo.</p>
+    `,
+    initialCode: "<body>\n  <table border='1'>\n    <thead>\n      <tr><th>Nombre</th></tr>\n    </thead>\n    <tbody id='tablaDatos'></tbody>\n  </table>\n  \n  <script>\n  let datos = [\n    {nombre: 'Ana'},\n    {nombre: 'Luis'},\n    {nombre: 'Carlos'}\n  ];\n  let tbody = document.getElementById('tablaDatos');\n  \n  // Escribe tu bucle for aquí para iterar 'datos' e inyectar <tr><td>...\n  \n  </script>\n</body>",
+    challenge: "Escribe un bucle for clásico (con let i = 0...) que itere sobre 'datos'. En cada vuelta usa <code>tbody.innerHTML += '&lt;tr&gt;&lt;td&gt;' + datos[i].nombre + '&lt;/td&gt;&lt;/tr&gt;'</code> para renderizar la base de datos en pantalla."
+  }
 ];
 
 // Hacer las lecciones accesibles globalmente
 window.lessons = lessons;
+

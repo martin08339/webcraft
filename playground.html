@@ -21,7 +21,10 @@
         <li><a href="playground.html" class="active">Playground</a></li>
         <li><a href="about.html">Sobre el Proyecto</a></li>
       </ul>
-      <a href="lecciones.html" class="btn btn-primary nav-cta">Comenzar</a>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <button id="themeToggle" class="btn btn-ghost" aria-label="Cambiar tema" style="padding: 8px 12px; font-size: 1.2rem;">☀️</button>
+        <a href="lecciones.html" class="btn btn-primary nav-cta">Comenzar</a>
+      </div>
       <button class="hamburger" id="hamburger" aria-label="Menú">
         <span></span><span></span><span></span>
       </button>
@@ -77,10 +80,22 @@
   <p>Este es tu playground libre.</p>
 </div>
 </textarea>
-        <div class="editor-preview">
-          <iframe id="editorPreview" sandbox="allow-scripts" title="Vista previa del código" style="min-height: 350px;"></iframe>
+          
+          <div class="editor-header" style="margin-top: 1px; border-top: 1px solid var(--border);">
+            <div class="editor-tabs" id="outputTabs">
+              <span class="editor-tab active" data-target="preview">👁️ Vista Previa</span>
+              <span class="editor-tab" data-target="console">💻 Consola</span>
+            </div>
+          </div>
+          
+          <div class="editor-preview" id="previewContainer">
+            <iframe id="editorPreview" sandbox="allow-scripts allow-same-origin" title="Vista previa del código" style="min-height: 350px;"></iframe>
+          </div>
+          
+          <div class="editor-console hidden" id="consoleContainer" style="background: #0d1117; color: #e6edf3; font-family: 'Fira Code', monospace; padding: 16px; min-height: 350px; overflow-y: auto; font-size: 14px; border-radius: 0 0 var(--radius) var(--radius);">
+            <div style="color: #8888a0; font-style: italic; margin-bottom: 8px;">> Consola interactiva lista...</div>
+          </div>
         </div>
-      </div>
     </div>
   </section>
 

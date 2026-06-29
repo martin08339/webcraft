@@ -21,7 +21,10 @@
         <li><a href="playground.html">Playground</a></li>
         <li><a href="about.html">Sobre el Proyecto</a></li>
       </ul>
-      <a href="lecciones.html" class="btn btn-primary nav-cta">Comenzar</a>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <button id="themeToggle" class="btn btn-ghost" aria-label="Cambiar tema" style="padding: 8px 12px; font-size: 1.2rem;">☀️</button>
+        <a href="lecciones.html" class="btn btn-primary nav-cta">Comenzar</a>
+      </div>
       <button class="hamburger" id="hamburger" aria-label="Menú">
         <span></span><span></span><span></span>
       </button>
@@ -58,10 +61,18 @@
     </div>
   </section>
 
-  <section class="section" style="padding-top: 20px;">
-    <div class="container" style="max-width: 900px;">
+  <section class="section">
+    <div class="container" style="max-width: 800px;">
+      
+      <!-- Course Tabs -->
+      <div class="course-tabs" id="courseTabs" style="display: flex; gap: 16px; margin-bottom: 40px; justify-content: center; flex-wrap: wrap;">
+        <button class="btn btn-primary course-tab active" data-course="html-css">1. HTML y CSS</button>
+        <button class="btn btn-ghost course-tab" data-course="javascript">2. JavaScript</button>
+        <button class="btn btn-ghost course-tab" data-course="database">3. Base de Datos</button>
+      </div>
+
       <div class="roadmap" id="roadmapContainer">
-        <!-- JS dynamically populates this -->
+        <!-- Las lecciones se inyectarán aquí vía JS -->
       </div>
     </div>
   </section>
