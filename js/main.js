@@ -866,6 +866,9 @@
             return;
           }
 
+          // Sonido de éxito
+          if (window.WebCraftSounds) window.WebCraftSounds.playSuccess();
+
           // Mostrar confetti
           showConfetti();
 
@@ -876,6 +879,9 @@
           if (result.newBadges && result.newBadges.length > 0) {
             result.newBadges.forEach(function (badge, index) {
               setTimeout(function () {
+                // Sonido de insignia
+                if (window.WebCraftSounds) window.WebCraftSounds.playBadgeUnlock();
+                showToast('🏆 ¡Insignia desbloqueada: ' + badge.name + '!', 'success');
                 showBadgeModal(badge);
               }, (index + 1) * 1500);
             });
@@ -1067,6 +1073,112 @@
 
     // Re-inicializar animaciones de scroll para los nuevos elementos
     setupScrollAnimations();
+
+    // --- Lógica del Certificado ---
+    var progressPercent = window.WebCraftProgress ? window.WebCraftProgress.getPercentage(10) : 0;
+    
+    // Si tiene 100%, mostrar un botón para el certificado
+    if (progressPercent === 100) {
+      var certBtnHtml = '<div class="lesson-card animate-on-scroll" style="text-align: center; border-color: var(--accent-cyan); background: var(--bg-card-hover);"><h3 style="color: var(--accent-cyan); margin-bottom: 12px;">🎓 ¡Felicidades! Has completado el curso</h3><p style="margin-bottom: 20px; color: var(--text-secondary);">Reclama tu certificado de graduación.</p><button class="btn btn-primary" id="btnOpenCertModal">Generar Certificado</button></div>';
+      roadmapContainer.insertAdjacentHTML('afterbegin', certBtnHtml);
+
+      var btnOpenCert = document.getElementById('btnOpenCertModal');
+      var certModal = document.getElementById('certModal');
+      var btnCloseCert = document.getElementById('btnCloseCert');
+      var btnGenCert = document.getElementById('btnGenerateCert');
+      var certName = document.getElementById('certName');
+
+      if (btnOpenCert && certModal) {
+        btnOpenCert.addEventListener('click', function() {
+          certModal.classList.add('active');
+          if (window.WebCraftSounds) window.WebCraftSounds.playBadgeUnlock();
+        });
+
+        btnCloseCert.addEventListener('click', function() {
+          certModal.classList.remove('active');
+        });
+
+        btnGenCert.addEventListener('click', function() {
+          var name = certName.value.trim();
+          if (!name) {
+            showToast('❌ Por favor ingresa tu nombre', 'warning');
+            if (window.WebCraftSounds) window.WebCraftSounds.playError();
+            return;
+          }
+          
+          generateCertificate(name);
+        });
+      }
+    }
+  }
+
+  /**
+   * Genera y descarga un certificado usando Canvas
+   */
+  function generateCertificate(name) {
+    var canvas = document.createElement('canvas');
+    canvas.width = 1200;
+    canvas.height = 800;
+    var ctx = canvas.getContext('2d');
+
+    // Fondo oscuro premium
+    ctx.fillStyle = '#0a0a0f';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Borde brillante
+    var grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    grad.addColorStop(0, '#00d4ff');
+    grad.addColorStop(1, '#7c3aed');
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 20;
+    ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+
+    // Detalles decorativos
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(40, 40, canvas.width - 80, canvas.height - 80);
+
+    // Texto: WebCraft
+    ctx.font = 'bold 40px sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.fillText('Web', canvas.width / 2 - 45, 120);
+    ctx.fillStyle = '#00d4ff';
+    ctx.fillText('Craft', canvas.width / 2 + 35, 120);
+
+    // Título
+    ctx.font = 'bold 60px sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('CERTIFICADO DE FINALIZACIÓN', canvas.width / 2, 250);
+
+    // Subtítulo
+    ctx.font = '30px sans-serif';
+    ctx.fillStyle = '#8888a0';
+    ctx.fillText('Se otorga el presente certificado a:', canvas.width / 2, 350);
+
+    // Nombre del estudiante
+    ctx.font = 'italic bold 70px serif';
+    ctx.fillStyle = '#00d4ff';
+    ctx.fillText(name, canvas.width / 2, 450);
+
+    // Descripción
+    ctx.font = '24px sans-serif';
+    ctx.fillStyle = '#e8e8ed';
+    ctx.fillText('Por haber completado con éxito el curso "Fundamentos de HTML y CSS"', canvas.width / 2, 550);
+    ctx.fillText('demostrando dominio en la estructuración y estilización de páginas web.', canvas.width / 2, 590);
+
+    // Fecha
+    var today = new Date().toLocaleDateString('es-ES');
+    ctx.font = '20px sans-serif';
+    ctx.fillStyle = '#8888a0';
+    ctx.fillText('Fecha de emisión: ' + today, canvas.width / 2, 700);
+
+    // Descargar imagen
+    var link = document.createElement('a');
+    link.download = 'Certificado_WebCraft_' + name.replace(/\s+/g, '_') + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    
+    if (window.showToast) window.showToast('✅ Certificado descargado', 'success');
   }
 
   // =====================

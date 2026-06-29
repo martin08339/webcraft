@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Explora las lecciones de WebCraft. Aprende HTML y CSS paso a paso con nuestro roadmap interactivo.">
+  <meta name="description" content="Playground libre de WebCraft. Experimenta con HTML, CSS y JS en tiempo real.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; frame-src 'self' blob:; img-src 'self' data:;">
-  <title>Lecciones — WebCraft</title>
+  <title>Playground — WebCraft</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/components.css">
@@ -17,8 +17,8 @@
       <a href="index.html" class="nav-logo">Web<span>Craft</span></a>
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html">Inicio</a></li>
-        <li><a href="lecciones.html" class="active">Lecciones</a></li>
-        <li><a href="playground.html">Playground</a></li>
+        <li><a href="lecciones.html">Lecciones</a></li>
+        <li><a href="playground.html" class="active">Playground</a></li>
         <li><a href="about.html">Sobre el Proyecto</a></li>
       </ul>
       <a href="lecciones.html" class="btn btn-primary nav-cta">Comenzar</a>
@@ -28,59 +28,59 @@
     </nav>
   </header>
 
-  <section class="lesson-header">
+  <section class="lesson-header" style="padding-bottom: 20px;">
     <div class="container">
-      <h1 class="animate-on-scroll">Tu Camino de <span class="gradient-text">Aprendizaje</span></h1>
-      <p style="color: var(--text-secondary); margin-top: 12px; font-size: 1.1rem;" class="animate-on-scroll">Sigue el roadmap y completa cada lección para desbloquear la siguiente</p>
-    </div>
-  </section>
-
-  <section class="section" style="padding-top: 40px;">
-    <div class="container" style="max-width: 900px;">
-      <div style="display: flex; gap: 24px; margin-bottom: 32px; flex-wrap: wrap;">
-        <div class="xp-display">
-          <span class="xp-icon">⚡</span>
-          <span id="totalXP">0</span> XP
-        </div>
-        <div class="streak-display">
-          <span class="streak-fire">🔥</span>
-          <span id="currentStreak">0</span> días de racha
-        </div>
-      </div>
-
-      <div class="progress-info">
-        <span class="progress-text">Progreso General</span>
-        <span class="progress-percentage" id="progressPercent">0%</span>
-      </div>
-      <div class="progress-container">
-        <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
-      </div>
+      <h1 class="animate-on-scroll">🛝 Playground Libre</h1>
+      <p style="color: var(--text-secondary); margin-top: 16px; font-size: 1.1rem; max-width: 600px;" class="animate-on-scroll">
+        Este es tu espacio libre para experimentar. Escribe código HTML y CSS a tu antojo sin reglas ni retos. Lo que pruebes aquí se renderizará en tiempo real.
+      </p>
     </div>
   </section>
 
   <section class="section" style="padding-top: 20px;">
-    <div class="container" style="max-width: 900px;">
-      <div class="roadmap" id="roadmapContainer">
-        <!-- JS dynamically populates this -->
-      </div>
-    </div>
-  </section>
+    <div class="container" style="max-width: 1000px;">
+      <div class="editor-container animate-on-scroll" id="codeEditor">
+        <div class="editor-header">
+          <div class="editor-tabs">
+            <div class="editor-tab active">index.html (Libre)</div>
+          </div>
+          <div class="editor-actions">
+            <button class="btn-reset" id="editorReset">↺ Limpiar</button>
+            <button class="btn-run" id="editorRun">▶ Ejecutar</button>
+          </div>
+        </div>
+        <!-- Default snippet to start -->
+        <textarea class="editor-textarea" id="editorTextarea" spellcheck="false" placeholder="Escribe tu código HTML/CSS aquí..." style="min-height: 350px;">
+<style>
+  body {
+    font-family: sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  h1 { color: #00d4ff; }
+</style>
 
-  <section class="section">
-    <div class="container" style="max-width: 900px;">
-      <h2 class="section-title animate-on-scroll">🏆 Tus <span class="gradient-text">Insignias</span></h2>
-      <p class="section-subtitle animate-on-scroll">Completa retos para desbloquear logros</p>
-      <div class="badges-grid" id="badgesContainer">
-        <!-- JS dynamically populates this -->
+<div class="card">
+  <h1>¡Hola, WebCraft!</h1>
+  <p>Este es tu playground libre.</p>
+</div>
+</textarea>
+        <div class="editor-preview">
+          <iframe id="editorPreview" sandbox="allow-scripts" title="Vista previa del código" style="min-height: 350px;"></iframe>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section class="section" style="padding-top: 0;">
-    <div class="container" style="max-width: 900px; text-align: center;">
-      <button class="btn btn-ghost" id="resetProgress" style="font-size: 0.85rem; color: var(--text-muted);">
-        🗑️ Reiniciar Progreso
-      </button>
     </div>
   </section>
 
@@ -95,6 +95,7 @@
           <h4>Navegación</h4>
           <a href="index.html">Inicio</a>
           <a href="lecciones.html">Lecciones</a>
+          <a href="playground.html">Playground</a>
           <a href="about.html">Sobre el Proyecto</a>
         </div>
         <div class="footer-col">
@@ -109,12 +110,9 @@
     </div>
   </footer>
 
-  <script src="js/lessons.js"></script>
   <script src="js/progress.js"></script>
-  <script src="js/badges.js"></script>
+  <script src="js/sounds.js"></script>
   <script src="js/editor.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
-
-
