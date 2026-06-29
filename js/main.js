@@ -738,6 +738,61 @@
             return;
           }
 
+          // Validación específica por lección para asegurar que cumplieron el reto
+          var codeLower = currentCode.toLowerCase();
+          var isValid = true;
+          var missingMessage = 'Faltan elementos requeridos en tu código.';
+
+          switch (lessonId) {
+            case 1:
+              isValid = codeLower.includes('<title>') && codeLower.includes('<h1>') && codeLower.includes('<p>');
+              missingMessage = 'Asegúrate de incluir las etiquetas <title>, <h1> y <p>.';
+              break;
+            case 2:
+              isValid = codeLower.includes('<h1>') && codeLower.includes('<h2>') && codeLower.includes('<strong>') && codeLower.includes('<em>') && codeLower.includes('<a ') && codeLower.includes('<hr>');
+              missingMessage = 'Faltan etiquetas. Asegúrate de usar <h1>, <h2>, <strong>, <em>, <a> y <hr>.';
+              break;
+            case 3:
+              isValid = codeLower.includes('<header>') && codeLower.includes('<nav>') && codeLower.includes('<main>') && codeLower.includes('<section>') && codeLower.includes('<footer>') && codeLower.includes('<img ') && codeLower.includes('alt=') && codeLower.includes('<ul>') && codeLower.includes('<ol>');
+              missingMessage = 'Usa las etiquetas semánticas (header, nav, main, section, footer), además de <img>, <ul> y <ol>.';
+              break;
+            case 4:
+              isValid = codeLower.includes('<form') && codeLower.includes('type="email"') && codeLower.includes('type="password"') && codeLower.includes('<select') && codeLower.includes('type="radio"') && codeLower.includes('type="checkbox"');
+              missingMessage = 'Asegúrate de incluir los inputs requeridos: email, password, select, radio y checkbox.';
+              break;
+            case 5:
+              isValid = codeLower.includes('<table') && codeLower.includes('<thead') && codeLower.includes('<tbody') && codeLower.includes('colspan') && codeLower.includes('rowspan') && (codeLower.includes('<video') || codeLower.includes('<audio'));
+              missingMessage = 'Tu tabla necesita thead, tbody, colspan, rowspan y una etiqueta multimedia (video o audio).';
+              break;
+            case 6:
+              isValid = codeLower.includes('<style>') && codeLower.includes('background-color') && codeLower.includes('color') && codeLower.includes('font-family');
+              missingMessage = 'Usa CSS interno (<style>) y cambia propiedades como background-color, color y font-family.';
+              break;
+            case 7:
+              isValid = codeLower.includes('class=') && codeLower.includes('id=') && (codeLower.includes('<div') || codeLower.includes('<span'));
+              missingMessage = 'Asegúrate de usar atributos class y id, y etiquetas <div> o <span>.';
+              break;
+            case 8:
+              isValid = codeLower.includes('margin') && codeLower.includes('padding') && codeLower.includes('border') && codeLower.includes('box-sizing');
+              missingMessage = 'Modifica los valores de margin, padding, border y asegúrate de usar box-sizing.';
+              break;
+            case 9:
+              isValid = codeLower.includes('display: flex') && codeLower.includes('justify-content') && codeLower.includes('align-items');
+              missingMessage = 'Usa Flexbox con display: flex, justify-content y align-items.';
+              break;
+            case 10:
+              isValid = codeLower.includes('@media') && (codeLower.includes('max-width') || codeLower.includes('min-width'));
+              missingMessage = 'Asegúrate de usar la regla @media y definir un ancho (max-width o min-width).';
+              break;
+          }
+
+          if (!isValid) {
+            if (window.showToast) {
+              window.showToast('❌ ' + missingMessage, 'warning');
+            }
+            return;
+          }
+
           var xpReward = lesson.xp || 50;
           var result = window.WebCraftProgress.completeLesson(lessonId, xpReward);
 
