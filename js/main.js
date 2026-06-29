@@ -996,6 +996,23 @@
       badgesContainer.innerHTML = badgesHTML;
     }
 
+    // --- Funcionalidad del botón de reiniciar progreso ---
+    var resetBtn = document.querySelector('#resetProgress');
+    if (resetBtn && window.WebCraftProgress) {
+      resetBtn.addEventListener('click', function () {
+        if (confirm('¿Estás seguro de que quieres reiniciar todo tu progreso? Perderás todas tus lecciones completadas, insignias, XP y rachas. Esta acción no se puede deshacer.')) {
+          window.WebCraftProgress.reset();
+          if (window.showToast) {
+            window.showToast('Progreso reiniciado correctamente', 'success');
+          }
+          // Recargar la página después de un breve momento para reflejar los cambios
+          setTimeout(function() {
+            window.location.reload();
+          }, 1000);
+        }
+      });
+    }
+
     // Re-inicializar animaciones de scroll para los nuevos elementos
     setupScrollAnimations();
   }
