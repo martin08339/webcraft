@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Firebase</title>
+  <style>
+    body { background: #111; color: #0f0; font-family: monospace; padding: 20px; font-size: 16px; }
+    .ok { color: #0f0; }
+    .error { color: #f00; }
+    .info { color: #0ff; }
+    #log { white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>🔧 Test de Firebase para WebCraft</h1>
+  <div id="log"></div>
+
+  <script>
+    var log = document.getElementById('log');
+    function addLog(msg, type) {
+      var p = document.createElement('p');
+      p.className = type || 'info';
+      p.textContent = msg;
+      log.appendChild(p);
+    }
+
+    addLog('1. Cargando Firebase SDK...', 'info');
+  </script>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"
+    onload="addLog('   ✅ firebase-app-compat.js CARGADO', 'ok')"
+    onerror="addLog('   ❌ firebase-app-compat.js FALLO AL CARGAR', 'error')">
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"
+    onload="addLog('   ✅ firebase-auth-compat.js CARGADO', 'ok')"
+    onerror="addLog('   ❌ firebase-auth-compat.js FALLO AL CARGAR', 'error')">
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"
+    onload="addLog('   ✅ firebase-firestore-compat.js CARGADO', 'ok')"
+    onerror="addLog('   ❌ firebase-firestore-compat.js FALLO AL CARGAR', 'error')">
+  </script>
+
+  <script>
+    addLog('');
+    addLog('2. Verificando objeto firebase...', 'info');
+    if (typeof firebase !== 'undefined') {
+      addLog('   ✅ firebase existe: ' + typeof firebase, 'ok');
+      addLog('   Version: ' + (firebase.SDK_VERSION || 'desconocida'), 'ok');
+    } else {
+      addLog('   ❌ firebase es UNDEFINED - el SDK no se cargo', 'error');
+    }
+
+    addLog('');
+    addLog('3. Intentando inicializar...', 'info');
+    try {
+      var config = {
+        apiKey: "AIzaSyC8gaARVqbfKPLURFBFG09V_GQTc6kyWvM",
+        authDomain: "webcraft-85468.firebaseapp.com",
+        projectId: "webcraft-85468",
+        storageBucket: "webcraft-85468.firebasestorage.app",
+        messagingSenderId: "794454105787",
+        appId: "1:794454105787:web:ab2d0b8e7d2d870e2f15b6"
+      };
+      
+      if (!firebase.apps.length) {
+        firebase.initializeApp(config);
+      }
+      addLog('   ✅ Firebase inicializado', 'ok');
+      
+      var auth = firebase.auth();
+      addLog('   ✅ Auth disponible: ' + typeof auth, 'ok');
+      
+      var db = firebase.firestore();
+      addLog('   ✅ Firestore disponible: ' + typeof db, 'ok');
+
+      addLog('');
+      addLog('4. Intentando crear cuenta de prueba...', 'info');
+      auth.createUserWithEmailAndPassword('test_webcraft@test.com', 'test123456')
+        .then(function(result) {
+          addLog('   ✅ ¡CUENTA CREADA! UID: ' + result.user.uid, 'ok');
+          addLog('');
+          addLog('🎉 ¡TODO FUNCIONA PERFECTAMENTE!', 'ok');
+          // Borrar la cuenta de prueba
+          result.user.delete();
+        })
+        .catch(function(error) {
+          addLog('   Resultado: ' + error.code + ' - ' + error.message, error.code === 'auth/email-already-in-use' ? 'ok' : 'error');
+          if (error.code === 'auth/email-already-in-use') {
+            addLog('   (Esto es NORMAL, la cuenta de prueba ya existia)', 'ok');
+            addLog('');
+            addLog('🎉 ¡TODO FUNCIONA CORRECTAMENTE!', 'ok');
+          }
+        });
+
+    } catch(e) {
+      addLog('   ❌ Error: ' + e.message, 'error');
+    }
+  </script>
+</body>
+</html>
