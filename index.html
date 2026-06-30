@@ -165,8 +165,23 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <script src="js/firebase-config.js?v=2"></script>
-  <script src="js/auth.js?v=2"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyC8gaARVqbfKPLURFBFG09V_GQTc6kyWvM",
+      authDomain: "webcraft-85468.firebaseapp.com",
+      projectId: "webcraft-85468",
+      storageBucket: "webcraft-85468.firebasestorage.app",
+      messagingSenderId: "794454105787",
+      appId: "1:794454105787:web:ab2d0b8e7d2d870e2f15b6",
+      measurementId: "G-HMPLEHTS1R"
+    };
+    if (typeof firebase !== 'undefined') {
+      if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+      window.auth = firebase.auth();
+      window.db = firebase.firestore();
+    }
+  </script>
+  <script src="js/auth.js?v=3"></script>
 
   <script src="js/lessons.js"></script>
   <script src="js/progress.js"></script>

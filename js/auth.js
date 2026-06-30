@@ -49,12 +49,10 @@
               <input type="password" id="authPassword" style="width: 100%; padding: 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--bg-primary); color: var(--text-primary);" placeholder="********">
             </div>
             
-            <div style="display: flex; gap: 12px; flex-direction: column;">
-              <button id="btnSignIn" class="btn btn-primary" style="width: 100%;">Ingresar</button>
-              <button id="btnSignUp" class="btn btn-secondary" style="width: 100%;">Crear Cuenta</button>
-            </div>
+            <button id="authLoginBtn" class="btn btn-primary" style="width: 100%; margin-bottom: 16px;">Ingresar</button>
+            <button id="authRegisterBtn" class="btn btn-secondary" style="width: 100%;">Crear Cuenta</button>
             
-            <p id="authErrorMsg" style="color: var(--danger); margin-top: 16px; font-size: 0.9rem; text-align: center; display: none;"></p>
+            <p id="authError" style="color: var(--danger); margin-top: 16px; font-size: 0.9rem; text-align: center; display: none;"></p>
           </div>
         </div>
       `;
@@ -65,41 +63,44 @@
     loginModal = document.getElementById('loginModal');
     emailInput = document.getElementById('authEmail');
     passwordInput = document.getElementById('authPassword');
-    var btnSignIn = document.getElementById('btnSignIn');
-    var btnSignUp = document.getElementById('btnSignUp');
+    loginBtn = document.getElementById('authLoginBtn');
+    registerBtn = document.getElementById('authRegisterBtn');
+    
+    // Add debug info if auth fails
+    if (!window.auth) {
+      document.getElementById('authError').innerHTML = "Debug: auth is undefined. Firebase: " + (typeof firebase !== 'undefined' ? "exists" : "missing") + ". Apps: " + (typeof firebase !== 'undefined' ? firebase.apps.length : 0);
+      document.getElementById('authError').style.display = 'block';
+    }
     var closeLoginModal = document.getElementById('closeLoginModal');
     
     // Eventos del modal
     closeLoginModal.addEventListener('click', closeLogin);
     
-    btnSignIn.addEventListener('click', function() {
+    loginBtn.addEventListener('click', function() {
       var email = emailInput.value.trim();
       var pass = passwordInput.value;
       if (!email || !pass) return showError("Completa ambos campos");
+      if (!window.auth) return showError("Error: Firebase no está disponible.");
       
-      if (!window.auth) return showError("Error: Firebase no está disponible. Verifica tu conexión a internet.");
-      
-      showError("Ingresando...", "info");
-      
+      showError("Iniciando sesión...", "info");
       window.auth.signInWithEmailAndPassword(email, pass)
-        .then(function(userCredential) {
-          closeLogin();
+        .then(function() {
+          loginModal.classList.remove('active');
+          showError("");
         })
         .catch(function(error) {
           showError(translateFirebaseError(error.code));
         });
     });
-
-    btnSignUp.addEventListener('click', function() {
+    
+    registerBtn.addEventListener('click', function() {
       var email = emailInput.value.trim();
       var pass = passwordInput.value;
       if (!email || !pass) return showError("Completa ambos campos");
       if (pass.length < 6) return showError("La contraseña debe tener al menos 6 caracteres");
-      
-      if (!window.auth) return showError("Error: Firebase no está disponible. Verifica tu conexión a internet.");
+      if (!window.auth) return showError("Error: Firebase no está disponible.");
       
       showError("Creando cuenta...", "info");
-      
       window.auth.createUserWithEmailAndPassword(email, pass)
         .then(function(userCredential) {
           // Inicializar perfil en BD
@@ -111,7 +112,8 @@
               completedLessons: []
             });
           }
-          closeLogin();
+          loginModal.classList.remove('active');
+          showError("");
         })
         .catch(function(error) {
           showError(translateFirebaseError(error.code));
