@@ -1324,7 +1324,7 @@
     } catch (e) {
       console.error('[WebCraft] Error durante la inicialización:', e);
     }
-  });
+  }
 
   /**
    * Inicializa la lógica específica de la página del playground
