@@ -3,7 +3,7 @@
 // ============================================
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC8gaARvqbfKPLURFBFG09V_GQTc6kyWvM",
+  apiKey: "AIzaSyC8gaARVqbfKPLURFBFG09V_GQTc6kyWvM",
   authDomain: "webcraft-85468.firebaseapp.com",
   projectId: "webcraft-85468",
   storageBucket: "webcraft-85468.firebasestorage.app",
