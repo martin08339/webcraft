@@ -127,11 +127,16 @@
   }
 
   /**
-   * Guarda los datos actuales en localStorage
+   * Guarda los datos actuales en localStorage y en la Nube
    */
   function saveData() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      // Sincronización a la nube si el usuario está autenticado
+      if (window.auth && window.auth.currentUser && window.db) {
+        window.db.collection('users').doc(window.auth.currentUser.uid).set(data, { merge: true })
+          .catch(function(err) { console.error("Error guardando en la nube:", err); });
+      }
     } catch (e) {
       console.error('[WebCraftProgress] Error al guardar en localStorage:', e);
     }
@@ -151,6 +156,28 @@
       console.error('[WebCraftProgress] Error al leer localStorage, datos posiblemente corruptos:', e);
       return null;
     }
+  }
+
+  /**
+   * Sincroniza desde la Nube (llamado desde auth.js al iniciar sesión)
+   */
+  function syncFromCloud(uid) {
+    if (!window.db) return;
+    window.db.collection('users').doc(uid).get().then(function(doc) {
+      if (doc.exists) {
+        var cloudData = doc.data();
+        // Fusionar nube con local si nube tiene más XP (lógica básica)
+        if (cloudData.totalXP >= data.totalXP) {
+          data = Object.assign(data, cloudData);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          if (typeof renderAll === 'function') renderAll(); // Actualizar UI
+          console.log("Progreso sincronizado desde la nube");
+        } else {
+          // Si local es más avanzado, subimos a la nube
+          saveData();
+        }
+      }
+    });
   }
 
   /**
@@ -387,6 +414,13 @@
   WebCraftProgress.getData = function () {
     if (data === null) return getDefaultData();
     return JSON.parse(JSON.stringify(data));
+  };
+
+  /**
+   * Sincroniza los datos desde la nube (Firestore)
+   */
+  WebCraftProgress.syncFromCloud = function(uid) {
+    syncFromCloud(uid);
   };
 
   // --- Exponer globalmente ---
