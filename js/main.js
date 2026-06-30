@@ -1320,6 +1320,7 @@
       initLessonPage();
       initLessonsPage();
       initPlaygroundPage();
+      initKofiWidget();
 
     } catch (e) {
       console.error('[WebCraft] Error durante la inicialización:', e);
@@ -1339,6 +1340,29 @@
     if (window.WebCraftEditor) {
       window.WebCraftEditor.init('#codeEditor');
     }
+  }
+
+  /**
+   * Carga el widget flotante de Ko-fi
+   */
+  function initKofiWidget() {
+    // Evitar cargar el widget varias veces
+    if (document.getElementById('kofi-widget-script')) return;
+
+    const script = document.createElement('script');
+    script.id = 'kofi-widget-script';
+    script.src = 'https://storage.ko-fi.com/cdn/scripts/overlay-widget.js';
+    script.onload = function() {
+      if (typeof kofiWidgetOverlay !== 'undefined') {
+        kofiWidgetOverlay.draw('webcraft_dev', {
+          'type': 'floating-chat',
+          'floating-chat.donateButton.text': 'Apóyanos',
+          'floating-chat.donateButton.background-color': '#00d4ff', // accent-cyan
+          'floating-chat.donateButton.text-color': '#0a0a0f'
+        });
+      }
+    };
+    document.body.appendChild(script);
   }
 
   // Inicializar UI principal
