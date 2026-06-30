@@ -129,59 +129,55 @@
   }
 
   function handleUserLoggedIn(user) {
-    // Buscar el botón 'Comenzar' o equivalente en el Nav
+    // Esconder botón de login y mostrar perfil
+    var loginBtn = document.getElementById('loginBtn');
+    if (loginBtn) loginBtn.style.display = 'none';
+
+    // Esconder botón Comenzar y reemplazar con perfil
     var navCta = document.querySelector('.nav-cta');
-    if (navCta) {
-      // Reemplazar por UI del usuario
-      var wrapper = navCta.parentNode;
-      
+    if (navCta) navCta.style.display = 'none';
+
+    // Crear UI de perfil si no existe
+    var existing = document.getElementById('userProfileNav');
+    if (!existing) {
       var profileUI = document.createElement('div');
       profileUI.id = "userProfileNav";
       profileUI.style.display = "flex";
       profileUI.style.alignItems = "center";
       profileUI.style.gap = "12px";
       
-      profileUI.innerHTML = `
-        <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--accent-cyan); color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-          ${user.email.charAt(0).toUpperCase()}
-        </div>
-        <button id="btnSignOut" class="btn btn-ghost" style="padding: 6px 12px; font-size: 0.9rem;">Salir</button>
-      `;
+      profileUI.innerHTML = '<div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1rem;">' +
+        user.email.charAt(0).toUpperCase() +
+        '</div>' +
+        '<span style="color: var(--text-secondary); font-size: 0.85rem;">' + user.email.split('@')[0] + '</span>' +
+        '<button id="btnSignOut" class="btn btn-ghost" style="padding: 6px 12px; font-size: 0.85rem; color: var(--danger);">Salir</button>';
       
-      wrapper.replaceChild(profileUI, navCta);
+      var container = loginBtn ? loginBtn.parentNode : (navCta ? navCta.parentNode : null);
+      if (container) container.appendChild(profileUI);
       
       document.getElementById('btnSignOut').addEventListener('click', function() {
         window.auth.signOut();
       });
     }
 
-    // Si progress.js ya cargó, forzamos sincronización con Firebase
+    // Sincronizar progreso desde la nube
     if (window.WebCraftProgress && window.WebCraftProgress.syncFromCloud) {
       window.WebCraftProgress.syncFromCloud(user.uid);
     }
   }
 
   function handleUserLoggedOut() {
+    // Mostrar botón de login
+    var loginBtn = document.getElementById('loginBtn');
+    if (loginBtn) loginBtn.style.display = '';
+
+    // Mostrar botón Comenzar
+    var navCta = document.querySelector('.nav-cta');
+    if (navCta) navCta.style.display = '';
+
+    // Eliminar perfil
     var profileUI = document.getElementById('userProfileNav');
-    if (profileUI) {
-      var wrapper = profileUI.parentNode;
-      var ctaBtn = document.createElement('button');
-      ctaBtn.className = "btn btn-primary nav-cta";
-      ctaBtn.textContent = "Iniciar Sesión";
-      ctaBtn.onclick = showLogin;
-      wrapper.replaceChild(ctaBtn, profileUI);
-    } else {
-      // Si estamos en la carga inicial y no estaba logueado, cambiar el link "Comenzar" a botón de login
-      var navCta = document.querySelector('.nav-cta');
-      if (navCta) {
-        navCta.textContent = "Iniciar Sesión";
-        navCta.href = "#";
-        navCta.onclick = function(e) {
-          e.preventDefault();
-          showLogin();
-        };
-      }
-    }
+    if (profileUI) profileUI.remove();
   }
 
   // Inicializar Auth UI
