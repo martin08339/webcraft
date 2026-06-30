@@ -2,7 +2,6 @@
 // Configuración de Firebase
 // ============================================
 
-// ⚠️ REEMPLAZA ESTOS VALORES CON LOS DE TU PROYECTO DE FIREBASE ⚠️
 const firebaseConfig = {
   apiKey: "AIzaSyC8gaARvqbfKPLURFBFG09V_GQTc6kyWvM",
   authDomain: "webcraft-85468.firebaseapp.com",
@@ -13,11 +12,21 @@ const firebaseConfig = {
   measurementId: "G-HMPLEHTS1R"
 };
 
-// Inicializar Firebase (solo si no se ha inicializado antes)
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+try {
+  // Verificar que Firebase se cargó correctamente
+  if (typeof firebase === 'undefined') {
+    console.error('[WebCraft] Firebase SDK no se cargó. Revisa tu conexión a internet.');
+  } else {
+    // Inicializar Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    
+    // Instancias globales
+    window.auth = firebase.auth();
+    window.db = firebase.firestore();
+    console.log('[WebCraft] Firebase inicializado correctamente');
+  }
+} catch (e) {
+  console.error('[WebCraft] Error al inicializar Firebase:', e);
 }
-
-// Instancias globales
-window.auth = firebase.auth();
-window.db = firebase.firestore();
