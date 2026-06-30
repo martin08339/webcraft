@@ -1273,7 +1273,7 @@
   // Inicialización principal
   // =====================
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function initMain() {
     try {
       // --- Tema Claro / Oscuro ---
       var themeToggle = document.getElementById('themeToggle');
@@ -1339,6 +1339,13 @@
     if (window.WebCraftEditor) {
       window.WebCraftEditor.init('#codeEditor');
     }
+  }
+
+  // Inicializar UI principal
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMain);
+  } else {
+    initMain();
   }
 
 })();

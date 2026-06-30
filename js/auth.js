@@ -184,7 +184,11 @@
     }
   }
 
-  // Inicializar Auth UI cuando el DOM cargue
-  document.addEventListener('DOMContentLoaded', initAuthUI);
+  // Inicializar Auth UI
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAuthUI);
+  } else {
+    initAuthUI();
+  }
 
 })();
