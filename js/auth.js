@@ -73,23 +73,32 @@
     closeLoginModal.addEventListener('click', closeLogin);
     
     btnSignIn.addEventListener('click', function() {
-      var email = emailInput.value;
+      var email = emailInput.value.trim();
       var pass = passwordInput.value;
       if (!email || !pass) return showError("Completa ambos campos");
+      
+      if (!window.auth) return showError("Error: Firebase no está disponible. Verifica tu conexión a internet.");
+      
+      showError("Ingresando...", "info");
       
       window.auth.signInWithEmailAndPassword(email, pass)
         .then(function(userCredential) {
           closeLogin();
         })
         .catch(function(error) {
-          showError(error.message);
+          showError(translateFirebaseError(error.code));
         });
     });
 
     btnSignUp.addEventListener('click', function() {
-      var email = emailInput.value;
+      var email = emailInput.value.trim();
       var pass = passwordInput.value;
       if (!email || !pass) return showError("Completa ambos campos");
+      if (pass.length < 6) return showError("La contraseña debe tener al menos 6 caracteres");
+      
+      if (!window.auth) return showError("Error: Firebase no está disponible. Verifica tu conexión a internet.");
+      
+      showError("Creando cuenta...", "info");
       
       window.auth.createUserWithEmailAndPassword(email, pass)
         .then(function(userCredential) {
@@ -105,16 +114,37 @@
           closeLogin();
         })
         .catch(function(error) {
-          showError(error.message);
+          showError(translateFirebaseError(error.code));
         });
     });
   }
 
-  function showError(msg) {
+  // Traducir errores de Firebase al español
+  function translateFirebaseError(code) {
+    var errors = {
+      'auth/user-not-found': '❌ No existe ninguna cuenta con ese correo. Usa "Crear Cuenta" para registrarte.',
+      'auth/wrong-password': '❌ Contraseña incorrecta. Inténtalo de nuevo.',
+      'auth/invalid-email': '❌ El formato del correo no es válido.',
+      'auth/email-already-in-use': '❌ Ya existe una cuenta con ese correo. Usa "Ingresar".',
+      'auth/weak-password': '❌ La contraseña es muy débil. Usa al menos 6 caracteres.',
+      'auth/too-many-requests': '⚠️ Demasiados intentos. Espera un momento e inténtalo de nuevo.',
+      'auth/network-request-failed': '⚠️ Error de conexión a internet. Revisa tu red.',
+      'auth/invalid-credential': '❌ Correo o contraseña incorrectos.',
+      'auth/operation-not-allowed': '⚠️ El método de autenticación no está habilitado. Activa Email/Password en la consola de Firebase.'
+    };
+    return errors[code] || '❌ Error: ' + code;
+  }
+
+  function showError(msg, type) {
     var errorP = document.getElementById('authErrorMsg');
     if (errorP) {
       errorP.textContent = msg;
       errorP.style.display = 'block';
+      if (type === 'info') {
+        errorP.style.color = 'var(--accent-cyan)';
+      } else {
+        errorP.style.color = 'var(--danger)';
+      }
     }
   }
 
